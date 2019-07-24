@@ -1,1 +1,38 @@
+$base-color: #ffda14;
 
+@import "styleHomePage";
+@import "styleBankingPage";
+@import "styleMenu";
+
+
+main > section{
+  & > div{
+    padding: 20px 40px 20px 40px;
+  }
+}
+
+section > *:first-child{
+  padding-top: 140px;
+}
+
+main{
+  min-height: 100vh;
+}
+
+.is-base{
+  background-color: $base-color;
+}
+
+form.form-horizontal input{
+  width: 100%;
+}
+
+
+footer{
+  background-color: #333;
+  color: #999;
+  border-top: 3px solid #999;
+  &{
+    padding: 80px 40px 20px 40px;
+  }
+}
