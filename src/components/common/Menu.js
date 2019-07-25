@@ -45,31 +45,63 @@ class Menu extends React.Component {
     return (
       <Fragment>
 
-
-
         <header className="navbar is-base p-fixed">
+
           <article className="navbar-section">
-            <a href="#" className="btn btn-link">Help</a>
+            <div className="dropdown">
+              <div className="btn-group">
+                <a className="btn btn-link dropdown-toggle" tabIndex="0">
+                  &nbsp;Help <i className="icon icon-caret"></i>
+                </a>
+                <ul className="menu">
+                  <li className="menu-item">
+                    <a href="#"><i className="icon icon-link"></i> Send us a secure message</a>
+                  </li>
+                  <li className="divider"></li>
+                  <li className="menu-item">
+                    <a href="#"><i className="icon icon-link"></i> FAQs</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </article>
+
           <article className="navbar-center">
-            <Link to='/' className="nav-link">picobank</Link>
+            <Link to='/' className="nav-link">
+              <h1 className="title">picobank</h1>
+            </Link>
           </article>
-          <article className="navbar-section">
 
-            {//!Auth.isAuthenticated() &&
+          {//Auth.isAuthenticated() &&
+            // the authenticated menu
+            <article className="navbar-section">
+              <div className="dropdown dropdown-right">
+                <div className="btn-group">
+                  <a className="btn btn-link dropdown-toggle" tabIndex="0"><i className="icon icon-people"></i></a>
+                  <ul className="menu">
+                    <li className="menu-item">
+                      <Link to='/banking'><i className="icon icon-link"></i> Accounts</Link>
+                    </li>
+                    <li className="divider"></li>
+                    <li className="menu-item">
+                      <a href="#" onClick={this.logout}><i className="icon icon-link"></i> Log out</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+          }
+
+          {!!Auth.isAuthenticated() &&
+            // the non authenticated menu
+            <article className="navbar-section">
               <Link to='/register' className="button">Sign up</Link>
-            }
-            {//!Auth.isAuthenticated() &&
               <Link to='/login' className="nav-link">Login</Link>
-            }
-            {//Auth.isAuthenticated() &&
-              <Link to='/banking' className="nav-link">Accounts</Link>
-            }
-            {//Auth.isAuthenticated() &&
-              <a href="#" onClick={this.logout} className="nav-link">Log Out</a>
-            }
+            </article>
+          }
 
-          </article>
+
+
         </header>
 
 

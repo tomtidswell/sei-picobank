@@ -42,3 +42,4 @@ class TransactionSchema(ma.ModelSchema, BaseSchema):
         model = Transaction
     # include the backref fields
     categories = fields.Nested('TransCategorySchema', many=True, exclude=('transactions',))
+    date = fields.DateTime(format='%d/%m/%Y')

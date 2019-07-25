@@ -4,6 +4,10 @@ $base-color: #ffda14;
 @import "styleBankingPage";
 @import "styleMenu";
 
+a, a:hover, a:visited, a:active{
+  color: black;
+}
+
 
 main > section{
   & > div{
@@ -17,6 +21,9 @@ section > *:first-child{
 
 main{
   min-height: 100vh;
+  section{
+    height: 100%;
+  }
 }
 
 .is-base{

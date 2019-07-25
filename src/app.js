@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-// import 'bulma'
+
 import 'spectre.css'
+import '../node_modules/spectre.css/dist/spectre-icons.css'
 import './style.scss'
 
 import Home from './components/common/Home'
-import Banking from './components/common/Banking'
+import Banking from './components/accounts/Banking'
 import Menu from './components/common/Menu'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'

@@ -5,5 +5,30 @@ section.banking-page{
   ul.tab-block{
     background-color: $base-color;
     margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .empty{
+    min-height: 60vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+  }
+
+  .currency{
+
+  }
+  
+  .charts{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    .chart{
+      width: 400px;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      box-shadow: 0 0.25rem 1rem rgba(48,55,66,.15);
+    }
   }
 }

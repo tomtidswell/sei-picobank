@@ -6,6 +6,7 @@ class TransCategory(db.Model):
     __tablename__ = 'transaction_categories'
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(40), unique=True, nullable=False)
+    colour = db.Column(db.String(7), nullable=False)
 
 
 class TransCategorySchema(ma.ModelSchema):

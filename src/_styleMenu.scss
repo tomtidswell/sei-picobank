@@ -2,4 +2,14 @@ header.navbar{
   box-shadow: 0px 1px 20px rgba(0,0,0,0.4);
   width: 100%;
   z-index: 100;
+  padding: 4px 8px;
+
+  .title{
+    margin: 0.2em 0;
+  }
+
+  .menu{
+    min-width: 250px;
+  }
+
 }
