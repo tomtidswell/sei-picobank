@@ -18,9 +18,9 @@ const Transactions = ({userData, accountTransactions, currentTab}) => {
           <tr>
             <th>Date</th>
             <th>Description</th>
-            <th>In</th>
-            <th>Out</th>
-            <th>Balance</th>
+            <th className="currency">In</th>
+            <th className="currency">Out</th>
+            <th className="currency">Balance</th>
             <th>Tags</th>
           </tr>
         </thead>

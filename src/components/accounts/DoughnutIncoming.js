@@ -31,7 +31,7 @@ function extractData(aggCat, catColours){
 
 class DoughnutIncoming extends Component {
   render() {
-    // console.log('catcol', this.props.catColours)
+
     const graphData = extractData(this.props.aggCat, this.props.catColours)
     data.labels = graphData.labels
     data.datasets[0].data = graphData.data

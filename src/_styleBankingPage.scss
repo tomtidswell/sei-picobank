@@ -16,18 +16,19 @@ section.banking-page{
   }
 
   .currency{
-
+    width: 60px;
+    text-align: right;
   }
-  
+
   .charts{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     .chart{
-      width: 400px;
-      padding: 10px;
+      width: 380px;
+      padding: 5px;
       border-radius: 5px;
-      margin: 10px 0;
+      margin: 5px 5px;
       box-shadow: 0 0.25rem 1rem rgba(48,55,66,.15);
     }
   }

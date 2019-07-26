@@ -3,6 +3,7 @@ import axios from 'axios'
 import Transactions from './Transactions'
 import DoughnutOutgoing from './DoughnutOutgoing'
 import DoughnutIncoming from './DoughnutIncoming'
+import BalanceLine from './BalanceLine'
 
 // import { Link } from 'react-router-dom'
 
@@ -130,6 +131,18 @@ class Banking extends React.Component {
               </div>
               <div className="card-header">
                 <div className="card-title h5">Income by category</div>
+                <div className="card-subtitle text-gray">
+                  Your transactions are grouped into the tags shown below
+                </div>
+              </div>
+            </div>
+
+            <div className="card chart">
+              <div className="card-image">
+                <BalanceLine accountTransactions={accountTransactions}/>
+              </div>
+              <div className="card-header">
+                <div className="card-title h5">Account balance</div>
                 <div className="card-subtitle text-gray">
                   Your transactions are grouped into the tags shown below
                 </div>

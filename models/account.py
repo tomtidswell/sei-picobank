@@ -36,10 +36,11 @@ class Transaction(db.Model, BaseModel):
     account = db.relationship('Account', backref='transactions')
     categories = db.relationship('TransCategory', secondary=transactions_to_categories, backref='transactions')
 
-class TransactionSchema(ma.ModelSchema, BaseSchema):
 
+class TransactionSchema(ma.ModelSchema, BaseSchema):
     class Meta:
         model = Transaction
     # include the backref fields
     categories = fields.Nested('TransCategorySchema', many=True, exclude=('transactions',))
     date = fields.DateTime(format='%d/%m/%Y')
+    formalDate = fields.Function(lambda obj: obj.date.strftime("%Y-%m-%d"))

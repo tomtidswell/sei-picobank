@@ -5,7 +5,7 @@ const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: 'Balance',
       fill: true,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -27,20 +27,66 @@ const data = {
     }
   ]
 }
+//
+const options = {
+  scales: {
+    xAxes: [{
+      type: 'time',
+      time: {
+        unit: 'day',
+        tooltipFormat: 'ddd DD MMM'
+      }
+    }],
+    yAxes: [{
+      ticks: {
+        suggestedMin: 0
+      }
+    }]
+  }
+}
+
 
 console.log('labels',data.labels)
-console.log('data',data.datasets[0].data)
 
-class Analysis extends Component {
+
+function extractData(transactions){
+  // const labels = []
+
+  const points = transactions.map(trans => {
+    return {
+      t: new Date(trans.formalDate),
+      y: trans.balance
+    }
+  })
+  const labels = transactions.map(trans => {
+    return new Date(trans.formalDate)
+  })
+
+  console.log('time formatted',points)
+  //only add the first and last date, and a centre point if there are more than 4 datapoints
+  labels.push(new Date(transactions[0].formalDate))
+  // if(transactions.length > 4) labels.push(transactions[Math.floor(transactions.length/2)].date)
+  // labels.push(transactions[transactions.length-1].date)
+
+  return { data: points, labels }
+}
+
+
+class BalanceLine extends Component {
   render() {
+    const graphData = extractData(this.props.accountTransactions)
+    data.labels = graphData.labels
+    data.datasets[0].data = graphData.data
+
+    console.log('labels',data.labels)
+    console.log('line data',data.datasets[0].data)
+
+
     var ref = 'chart'
     return (
-      <div>
-        <h2>Line Example</h2>
-        <Line ref={ref} data={data} />
-      </div>
+      <Line ref={ref} data={data} options={options}/>
     )
   }
 }
 
-export default Analysis
+export default BalanceLine
