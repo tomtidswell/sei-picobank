@@ -1,58 +1,108 @@
 import React from 'react'
 
 
-const Transactions = ({userData, accountTransactions, currentTab}) => {
+class Transactions extends React.Component{
+  constructor() {
+    super()
 
-  if(!userData || !accountTransactions)
-    return null
+    this.state = {
+      filters: []
+    }
+    this.changeFilter = this.changeFilter.bind(this)
+  }
 
-  console.log('user:',userData.email)
-  console.log('current tab:',currentTab)
-  console.log('account:',accountTransactions)
+  changeFilter(add,remove){
+    let filters = this.state.filters
+    if(add && !filters.some(item => item.category === add.category)){
+      filters.push(add)
+    }
+    if(remove) {
+      filters = filters.filter(filter => filter.category !== remove.category)
+    }
+    this.setState({ filters })
+  }
 
-  return (
-    <div>
-      <h5>Your account breakdown</h5>
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th className="currency">In</th>
-            <th className="currency">Out</th>
-            <th className="currency">Balance</th>
-            <th>Tags</th>
-          </tr>
-        </thead>
-        <tbody>
-          {accountTransactions.map((transaction, index) => (
-            <tr key={index}>
-              <td>{transaction.date}</td>
-              <td>{transaction.description}</td>
-              <td className="text-right">
-                {transaction.amount >= 0 ? `£${transaction.amount.toFixed(2)}` : ''}
-              </td>
-              <td className="text-right">
-                {transaction.amount < 0 ? `£${Math.abs(transaction.amount).toFixed(2)}` : ''}
-              </td>
-              <td className="text-right">£{transaction.balance.toFixed(2)}</td>
-              <td>
-                {transaction.categories.map((category, index) => (
-                  <span
-                    style={{backgroundColor: category.colour}}
-                    className={`chip is-${category.category.toLowerCase()}`}
-                    key={index}>
-                    {category.category} <a href="#" className="btn btn-clear" aria-label="Close" role="button"></a>
-                  </span>
+  render(){
 
-                ))}
-              </td>
+    const { userData, accountTransactions, currentTab } = this.props
+    const { filters } = this.state
+    let filteredTrans = accountTransactions
+
+    if(!userData || !accountTransactions)
+      return null
+
+    //filter the transactions by the filter specified in the state
+    if(filters.length > 0)
+      filteredTrans = accountTransactions.filter(trans => {
+        return trans.categories.some(cat => filters.some(filter => filter.category === cat.category))
+      })
+
+    console.log('user:',userData.email)
+    console.log('current tab:',currentTab)
+    console.log('account:',accountTransactions)
+
+    return (
+      <div>
+
+        <div className="columns">
+          <div className="column col-6"><h5>Your account breakdown</h5></div>
+          <div className="column col-6 is-right">
+            {this.state.filters.length > 0 ? 'Filter: ' : ''}
+            {this.state.filters.map((filter, index) => (
+              <span
+                style={{backgroundColor: filter.colour}}
+                className="chip"
+                key={index}>
+                {filter.category}
+                <a className="btn btn-clear" role="button" onClick={()=>this.changeFilter(null,filter)}></a>
+              </span>
+            ))}
+          </div>
+        </div>
+
+
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th className="currency">In</th>
+              <th className="currency">Out</th>
+              <th className="currency">Balance</th>
+              <th className="is-right">Tags</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+          </thead>
+          <tbody>
+            {filteredTrans.map((transaction, index) => (
+              <tr key={index}>
+                <td>{transaction.date}</td>
+                <td>{transaction.description}</td>
+                <td className="text-right">
+                  {transaction.amount >= 0 ? `£${transaction.amount.toFixed(2)}` : ''}
+                </td>
+                <td className="text-right">
+                  {transaction.amount < 0 ? `£${Math.abs(transaction.amount).toFixed(2)}` : ''}
+                </td>
+                <td className="text-right">£{transaction.balance.toFixed(2)}</td>
+                <td className="is-right">
+                  {transaction.categories.map((category, index) => (
+                    <span
+                      style={{backgroundColor: category.colour}}
+                      className='chip add-filter'
+                      onClick={()=>this.changeFilter(category,null)}
+                      key={index}>
+                      {category.category}
+                    </span>
+
+                  ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
 }
 
 export default Transactions

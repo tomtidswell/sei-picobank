@@ -1,6 +1,7 @@
 from app import app, db
 from models.account import Account, Transaction
 from models.transaction_category import TransCategory
+from models.message import Message
 from db.seed_users import users
 from db.seed_transactions \
     import add_transactions_rnd, add_transactions_bills, add_transactions_income, acc_transfer, categories
@@ -32,6 +33,15 @@ with app.app_context():
 
     acc_transfer(acc_from=accounts[0], acc_to=accounts[2], verb='Payment', days=10)
     acc_transfer(acc_from=accounts[0], acc_to=accounts[2], verb='Payment', days=40)
+
+
+    message0 = Message(text='Hello I am a message', owner=users[0], archived=False)
+    message0 = Message(text='Hello I am a message', owner=users[1], archived=False)
+    message1 = Message(text='Hello I am another message', owner=users[0], archived=False)
+    message1 = Message(text='Hello I am another message', owner=users[1], archived=False)
+    message0 = Message(text='I am the reply from the support team', owner=users[0], archived=False, incoming=True)
+    message1 = Message(text='I am the reply from the support team', owner=users[1], archived=False, incoming=True)
+
 
 
     # categories (only need to add categories that havent been used yet)

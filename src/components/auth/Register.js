@@ -6,7 +6,7 @@ class Register extends React.Component {
     super()
 
 
-    this.state = { data: {}, errors: {}  }
+    this.state = { data: {}, errors: {} }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -25,70 +25,67 @@ class Register extends React.Component {
       .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
+
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="form-horizontal">
         <h4 className="">Register</h4>
-        <div className="field">
-          <div className="control">
+
+
+        <div className="form-group">
+          <div className="col-5 col-sm-12">
+            <label className="form-label" htmlFor="email">Email</label>
+          </div>
+          <div className="col-7 col-sm-12">
             <input
-              className={`input ${this.state.errors.username ? 'is-danger' : ''}`}
-              name="username"
-              placeholder="Username"
+              className={`input ${this.state.errors.email ? 'is-danger' : ''}`}
+              name="email"
               onChange={this.handleChange}
             />
           </div>
-          {this.state.errors.username && <small className="help is-danger">{this.state.errors.username}</small>}
+          {this.state.errors.email && <small className="help is-danger">{this.state.errors.email}</small>}
         </div>
 
-        <div className="field">
-          <div className="control">
+        <div className="form-group">
+          <div className="col-5 col-sm-12">
+            <label className="form-label" htmlFor="password">Password</label>
+          </div>
+          <div className="col-7 col-sm-12">
             <input
               className={`input ${this.state.errors.password ? 'is-danger' : ''}`}
               type="password"
               name="password"
-              placeholder="Password"
               onChange={this.handleChange}
             />
           </div>
           {this.state.errors.password && <small className="help is-danger">{this.state.errors.password}</small>}
         </div>
-        <div className="field">
-          <div className="control">
+
+        <div className="form-group">
+          <div className="col-5 col-sm-12">
+            <label className="form-label" htmlFor="passwordConfirmation">Password confirmation</label>
+          </div>
+          <div className="col-7 col-sm-12">
             <input
               className={`input ${this.state.errors.passwordConfirmation ? 'is-danger' : ''}`}
               type="password"
               name="passwordConfirmation"
-              placeholder="Password Confirmation"
               onChange={this.handleChange}
             />
           </div>
           {this.state.errors.passwordConfirmation && <small className="help is-danger">{this.state.errors.bio}</small>}
         </div>
-        <div className="field">
-          <div className="control">
-            <input
-              className={`input ${this.state.errors.passwordConfirmation ? 'is-danger' : ''}`}
-              type="bio"
-              name="bio"
-              placeholder="Write a small bio about yourself..."
-              onChange={this.handleChange}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <div className="control">
-            <input
-              className="input"
-              name="picture"
-              placeholder="Image"
-              onChange={this.handleChange}
 
-            />
+        <div className="form-group">
+          <div className="col-5 col-sm-12">
           </div>
+          <div className="col-7 col-sm-12">
+            <button type="submit" className="btn">Submit</button>
+          </div>
+          {this.state.errors.passwordConfirmation && <small className="help is-danger">{this.state.errors.bio}</small>}
         </div>
-        {this.state.errors.passwordConfirmation && <small className="help is-danger">{this.state.errors.passwordConfirmation}</small>}
-        <button type="submit" className="btn">Submit</button>
+
+
       </form>
     )
   }

@@ -46,23 +46,20 @@ const options = {
 }
 
 
-console.log('labels',data.labels)
-
-
 function extractData(transactions){
   // const labels = []
 
   const points = transactions.map(trans => {
     return {
       t: new Date(trans.formalDate),
-      y: trans.balance
+      y: trans.balance.toFixed(2)
     }
   })
   const labels = transactions.map(trans => {
     return new Date(trans.formalDate)
   })
 
-  console.log('time formatted',points)
+  // console.log('time formatted',points)
   //only add the first and last date, and a centre point if there are more than 4 datapoints
   labels.push(new Date(transactions[0].formalDate))
   // if(transactions.length > 4) labels.push(transactions[Math.floor(transactions.length/2)].date)
@@ -78,8 +75,8 @@ class BalanceLine extends Component {
     data.labels = graphData.labels
     data.datasets[0].data = graphData.data
 
-    console.log('labels',data.labels)
-    console.log('line data',data.datasets[0].data)
+    // console.log('labels',data.labels)
+    // console.log('line data',data.datasets[0].data)
 
 
     var ref = 'chart'

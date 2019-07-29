@@ -1,5 +1,5 @@
-section.banking-page{
-  .hero.bank-head{
+section.message-page{
+  .hero.message-head{
     background-color: $base-colour;
   }
   ul.tab-block{
@@ -15,31 +15,39 @@ section.banking-page{
     justify-content: center;
   }
 
-  .currency{
-    width: 60px;
-    text-align: center;
+  .new-message{
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+    cursor: pointer;
   }
 
-  .charts{
+
+  .messages{
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    p{
-      margin: 0;
-    }
-    .chart{
+    .message{
       width: 380px;
+      min-width: 50vw;
       padding: 5px;
       border-radius: 5px;
       margin: 5px 5px;
       box-shadow: 0 0.25rem 1rem rgba(48,55,66,.15);
+
+      &.my-message{
+        align-self: flex-end;
+      }
+
+      .archive{
+        cursor: pointer;
+        color: #888;
+      }
     }
-    .small-chart{
-      margin-top: 20px;
-      height:130px;
-    }
-  }
-  .chip.add-filter{
-    cursor: pointer;
   }
 }

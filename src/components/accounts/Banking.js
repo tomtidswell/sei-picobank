@@ -4,6 +4,7 @@ import Transactions from './Transactions'
 import DoughnutOutgoing from './DoughnutOutgoing'
 import DoughnutIncoming from './DoughnutIncoming'
 import BalanceLine from './BalanceLine'
+import ThisMonth from './ThisMonth'
 
 // import { Link } from 'react-router-dom'
 
@@ -70,11 +71,25 @@ class Banking extends React.Component {
   addRunningBalance(transactions){
     //inserts a running balance into each object
     return transactions.map((transaction, index) => {
-      index === 0
-        ? transaction.balance = transaction.amount
-        : transaction.balance = transactions[index-1].balance + transaction.amount
+      transaction.balance = index === 0
+        ? transaction.amount
+        : transactions[index-1].balance + transaction.amount
       return transaction
     })
+  }
+
+  extractThisMonth(transactions){
+    const thisMonth = new Date(Date.now()).getMonth()
+    //filter out everything except this months data
+    transactions = transactions.filter(trans => new Date(trans.formalDate).getMonth() === thisMonth)
+    return {
+      transactions,
+      //push the outgoing transaction total
+      outgoingTotal: transactions.reduce((acc,trans) => trans.amount < 0 ? acc += Math.abs(trans.amount) : acc,0),
+      //push the incoming transaction total
+      incomingTotal: transactions.reduce((acc,trans) => trans.amount > 0 ? acc += Math.abs(trans.amount) : acc ,0)
+    }
+
   }
 
 
@@ -84,13 +99,13 @@ class Banking extends React.Component {
       return null
     const {userData} = this.state
     let {accountTransactions} = this.state
-    console.log('user:', userData)
-    console.log('account:', accountTransactions)
+    // console.log('user:', userData)
+    // console.log('account:', accountTransactions)
     accountTransactions = this.addRunningBalance(accountTransactions)
     const outgoingAggCat = this.aggregateCategoriesAndSpend(this.state.accountTransactions, 'debits')
     const incomingAggCat = this.aggregateCategoriesAndSpend(this.state.accountTransactions, 'credits')
     const catColours = this.categoryColourSettings(accountTransactions)
-
+    const thisMonthData = this.extractThisMonth(accountTransactions)
 
     return (
       <section className="banking-page">
@@ -147,6 +162,27 @@ class Banking extends React.Component {
                   Your transactions are grouped into the tags shown below
                 </div>
               </div>
+            </div>
+
+            <div className="card chart">
+              <div className="card-image small-chart">
+                <ThisMonth data={thisMonthData}/>
+              </div>
+              <div className="card-header">
+                <div className="card-title h5">This month so far</div>
+
+                <div className="card-subtitle text-gray">
+                  <p>Your current balance is: £
+                    {thisMonthData.transactions[thisMonthData.transactions.length - 1].balance.toFixed(2)}
+                  </p>
+                  <p>Your total outgoings are: £</p>
+                  <p>Your total incomings are: £</p>
+                  <p>Largest expense:&nbsp;
+                    {thisMonthData.transactions.reduce((acc, trans )=> trans.amount < acc.amount ? trans : acc,{ amount: 0 }).description}
+                  </p>
+                </div>
+              </div>
+
             </div>
 
           </div>

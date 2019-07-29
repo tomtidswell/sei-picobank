@@ -55,11 +55,11 @@ class Menu extends React.Component {
                 </a>
                 <ul className="menu">
                   <li className="menu-item">
-                    <a href="#"><i className="icon icon-link"></i> Send us a secure message</a>
+                    <Link to='/message'><i className="icon icon-mail"></i> &nbsp;Send us a secure message</Link>
                   </li>
                   <li className="divider"></li>
                   <li className="menu-item">
-                    <a href="#"><i className="icon icon-link"></i> FAQs</a>
+                    <a href="#"><i className="icon icon-search"></i> &nbsp;FAQs</a>
                   </li>
                 </ul>
               </div>
@@ -68,7 +68,7 @@ class Menu extends React.Component {
 
           <article className="navbar-center">
             <Link to='/' className="nav-link">
-              <h1 className="title">picobank</h1>
+              <h1 className="title">p&#305;coBank</h1>
             </Link>
           </article>
 
@@ -80,11 +80,11 @@ class Menu extends React.Component {
                   <a className="btn btn-link dropdown-toggle" tabIndex="0"><i className="icon icon-people"></i></a>
                   <ul className="menu">
                     <li className="menu-item">
-                      <Link to='/banking'><i className="icon icon-link"></i> Accounts</Link>
+                      <Link to='/banking'><i className="icon icon-copy"></i> &nbsp;Your Accounts</Link>
                     </li>
                     <li className="divider"></li>
                     <li className="menu-item">
-                      <a href="#" onClick={this.logout}><i className="icon icon-link"></i> Log out</a>
+                      <a href="#" onClick={this.logout}><i className="icon icon-shutdown"></i> &nbsp;Log out</a>
                     </li>
                   </ul>
                 </div>
@@ -103,16 +103,6 @@ class Menu extends React.Component {
 
 
         </header>
-
-
-
-
-
-
-
-
-
-
 
       </Fragment>
     )

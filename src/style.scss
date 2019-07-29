@@ -1,11 +1,14 @@
-$base-color: #ffda14;
+$base-colour: #ffda14;
+$secondary-colour: #14afff;
 
 @import "styleHomePage";
 @import "styleBankingPage";
+@import "styleMessagePage";
 @import "styleMenu";
 
 a, a:hover, a:visited, a:active{
-  color: black;
+  color: #3b4351;
+  text-decoration: none;
 }
 
 
@@ -27,11 +30,29 @@ main{
 }
 
 .is-base{
-  background-color: $base-color;
+  background-color: $base-colour;
+}
+.is-secondary{
+  background-color: $secondary-colour;
+}
+
+.text-base{
+  display: inline-block;
+  background-color: $base-colour;
+  padding: 3px 8px;
+  box-shadow: 10px 10px 1rem rgba(48,55,66,6);
 }
 
 form.form-horizontal input{
   width: 100%;
+}
+
+.tab-block{
+  cursor: pointer;
+}
+
+.is-right{
+  text-align: right;
 }
 
 

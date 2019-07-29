@@ -1,10 +1,13 @@
 from flask import Blueprint, jsonify, request, g
 from models.user import User, UserSchema
+
+
 # from lib.secure_route import secure_route
 
 
 api = Blueprint('users', __name__)
-user_schema = UserSchema(exclude=('password', 'id', 'updated_at'))
+user_schema = UserSchema(exclude=('password', 'id', 'updated_at', 'messages'))
+
 
 # ROUTES FOR USERS TO ACCESS
 

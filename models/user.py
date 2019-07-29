@@ -55,9 +55,8 @@ class UserSchema(ma.ModelSchema, BaseSchema):
     #define these virtual fields on the JSON schema which we dont have on the database schema
     password = fields.String(required=True)
     password_confirmation = fields.String(required=True)
-
     accounts = fields.Nested('AccountSchema', many=True, only=('type', 'id', 'nickname'))
-
+    messages = fields.Nested('MessageSchema', many=True)
 
     class Meta:
         model = User

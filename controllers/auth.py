@@ -28,5 +28,5 @@ def login():
         return jsonify({'message': 'Unauthorised'}), 401
     return jsonify({
         'token': user.generate_token(),
-        'message': f'Welcome back {user.username}'
+        'message': f'Welcome back {user.email}'
     }), 200

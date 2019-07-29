@@ -8,6 +8,7 @@ import './style.scss'
 
 import Home from './components/common/Home'
 import Banking from './components/accounts/Banking'
+import SecureMessaging from './components/messaging/SecureMessaging'
 import Menu from './components/common/Menu'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
@@ -25,6 +26,7 @@ const App = () => {
           <Route exact path="/register" component={Register}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/banking" component={Banking}/>
+          <Route exact path="/message" component={SecureMessaging}/>
           <Route exact path="/" component={Home}/>
           <Route path="/*" component={NotFound}/>
         </Switch>
