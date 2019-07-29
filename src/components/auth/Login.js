@@ -9,6 +9,7 @@ class Login extends React.Component {
     this.state = { data: {}, error: ''  }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+
   }
 
   handleChange({ target: { name, value } }) {
@@ -19,17 +20,20 @@ class Login extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-
     axios.post('/api/login', this.state.data)
       .then(res => {
         Auth.setToken(res.data.token)
+        this.props.handleLogin()
         console.log(res.data)
-        this.props.history.push('/index')
       })
-      .catch(() => this.setState({ error: 'Invalid Crendentials' }))
+      .catch(err => {
+        console.log(err)
+        this.setState({ error: 'Invalid Crendentials' })
+      })
   }
 
   render() {
+    console.log('loginprops', this.props)
     return (
 
 

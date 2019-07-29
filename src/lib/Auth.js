@@ -1,14 +1,14 @@
 class Auth {
   static setToken(token) {
-    localStorage.setItem('token', token)
+    localStorage.setItem('picobankUser', token)
   }
 
   static getToken() {
-    return localStorage.getItem('token')
+    return localStorage.getItem('picobankUser')
   }
 
   static logout() {
-    localStorage.removeItem('token')
+    localStorage.removeItem('picobankUser')
   }
 
   static getPayload() {

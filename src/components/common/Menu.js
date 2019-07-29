@@ -32,12 +32,16 @@ class Menu extends React.Component {
   }
 
   logout() {
-    //Auth.logout()
+    Auth.logout()
     this.props.history.push('/')
   }
 
   toggleNavbar() {
     this.setState({ navbarOpen: !this.state.navbarOpen })
+  }
+
+  handleAuth(){
+
   }
 
   render() {
@@ -72,34 +76,39 @@ class Menu extends React.Component {
             </Link>
           </article>
 
-          {//Auth.isAuthenticated() &&
-            // the authenticated menu
-            <article className="navbar-section">
-              <div className="dropdown dropdown-right">
-                <div className="btn-group">
-                  <a className="btn btn-link dropdown-toggle" tabIndex="0"><i className="icon icon-people"></i></a>
+
+
+          <article className="navbar-section">
+            <div className="dropdown dropdown-right">
+              <div className="btn-group">
+                <a className="btn btn-link dropdown-toggle" tabIndex="0"><i className="icon icon-people"></i></a>
+
+                {Auth.isAuthenticated() &&
                   <ul className="menu">
                     <li className="menu-item">
                       <Link to='/banking'><i className="icon icon-copy"></i> &nbsp;Your Accounts</Link>
+                      <Link to='/link'><i className="icon icon-copy"></i> &nbsp;Link another Account</Link>
                     </li>
                     <li className="divider"></li>
                     <li className="menu-item">
-                      <a href="#" onClick={this.logout}><i className="icon icon-shutdown"></i> &nbsp;Log out</a>
+                      <a onClick={this.logout}><i className="icon icon-shutdown"></i> &nbsp;Log out</a>
                     </li>
                   </ul>
-                </div>
+                }
+                {!Auth.isAuthenticated() &&
+                  <ul className="menu">
+                    <li className="menu-item">
+                      <a href='#register-login' className="nav-link">Log in</a>
+                    </li>
+                    <li className="divider"></li>
+                    <li className="menu-item">
+                      <Link to='/register' className="button">Register for online banking</Link>
+                    </li>
+                  </ul>
+                }
               </div>
-            </article>
-          }
-
-          {!!Auth.isAuthenticated() &&
-            // the non authenticated menu
-            <article className="navbar-section">
-              <Link to='/register' className="button">Sign up</Link>
-              <Link to='/login' className="nav-link">Login</Link>
-            </article>
-          }
-
+            </div>
+          </article>
 
 
         </header>

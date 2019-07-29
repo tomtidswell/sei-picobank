@@ -5,6 +5,7 @@ import DoughnutOutgoing from './DoughnutOutgoing'
 import DoughnutIncoming from './DoughnutIncoming'
 import BalanceLine from './BalanceLine'
 import ThisMonth from './ThisMonth'
+import Auth from '../../lib/Auth'
 
 // import { Link } from 'react-router-dom'
 
@@ -13,18 +14,25 @@ class Banking extends React.Component {
   constructor() {
     super()
 
-    this.state = { userId: 1, currentTab: 0 }
+    this.state = { userId: Auth.getPayload().sub, currentTab: 0 }
   }
 
   componentDidMount() {
     let userData = null
     let accountTransactions = null
-    axios.get(`/api/users/${this.state.userId}`)
+
+    if(!Auth.getToken()) this.props.history.push('/')
+
+    axios.get(`/api/users/${this.state.userId}`,{
+      headers: { Authorization: `Bearer ${Auth.getToken()}` }
+    })
       .then(res => {
         userData = res.data
         // console.log(userData.accounts[0].id)
         if(userData.accounts.length)
-          return axios.get(`/api/accounts/${userData.accounts[0].id}/transactions`)
+          return axios.get(`/api/accounts/${userData.accounts[0].id}/transactions`, {
+            headers: { Authorization: `Bearer ${Auth.getToken()}` }
+          })
       })
       .then(res => {
         accountTransactions = res ? res.data : null
@@ -35,7 +43,9 @@ class Banking extends React.Component {
 
   switchTab(accountId, tabId){
     console.log('switching to', accountId)
-    axios.get(`/api/accounts/${accountId}/transactions`)
+    axios.get(`/api/accounts/${accountId}/transactions`, {
+      headers: { Authorization: `Bearer ${Auth.getToken()}` }
+    })
       .then(res => this.setState({ accountTransactions: res.data, currentTab: tabId }))
       .catch(err => console.log(err))
   }

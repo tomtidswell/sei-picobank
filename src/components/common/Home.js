@@ -1,9 +1,10 @@
 import React from 'react'
 // import { Link } from 'react-router-dom'
-
 import Register from '../auth/Register'
 import Login from '../auth/Login'
 import NewApplication from './NewApplication'
+import Auth from '../../lib/Auth'
+
 
 class Home extends React.Component {
   constructor() {
@@ -11,6 +12,7 @@ class Home extends React.Component {
 
     this.state = { application: false }
     this.toggleApplication = this.toggleApplication.bind(this)
+    this.handleLogin = this.handleLogin.bind(this)
   }
 
 
@@ -18,8 +20,15 @@ class Home extends React.Component {
     this.setState({ application: !this.state.application })
   }
 
+  handleLogin(){
+    this.props.history.push('/banking')
+    window.scrollTo(0, 0)
+  }
+
 
   render() {
+    console.log('homeprops', this.props)
+
     return (
       <section className="home-page">
         <div className="hero hero-lg">
@@ -79,22 +88,23 @@ class Home extends React.Component {
             </li>
           </ul>
         </div>
-
-
-        <div className="hero hero-sm">
-          <h2 className="subtitle">Get started now!</h2>
-          <div className="columns">
-            <div className="column">
-              <Register />
-            </div>
-            <div className="divider-vert" data-content="OR"></div>
-            <div className="column">
-              <Login />
+        
+        {!Auth.isAuthenticated() &&
+          <div className="hero hero-sm" id="register-login">
+            <h2 className="subtitle">Get started now!</h2>
+            <div className="columns">
+              <div className="column">
+                <Register />
+              </div>
+              <div className="divider-vert" data-content="OR"></div>
+              <div className="column">
+                <Login handleLogin={this.handleLogin}/>
+              </div>
             </div>
           </div>
-        </div>
+        }
 
-        <div className="hero bg-gray">
+        <div className="hero is-base">
           <h2 className="subtitle">Dont just take our word for it!</h2>
           <blockquote>
             <p>Something that someone said once that we spun and then spun again</p>
