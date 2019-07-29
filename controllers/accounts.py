@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, g
 from models.account import Account, AccountSchema, Transaction, TransactionSchema
 from models.user import User, UserSchema
-# from lib.secure_route import secure_route
+from lib.secure_route import secure_route
 
 
 api = Blueprint('accounts', __name__)
@@ -11,14 +11,15 @@ account_schema = AccountSchema(exclude=('transactions',))
 transaction_schema = TransactionSchema(exclude=('account', 'created_at', 'updated_at'))
 
 
+# this is included for debugging purposes, and should be commented out before deployment
 @api.route('/accounts', methods=['GET'])
 def accIndex():
-    # redefine the account schema so that we exclude the transactions when we are looking at the index - this will improve performance
     accounts = Account.query.all()
     return account_schema.jsonify(accounts, many=True), 200
 
 
 @api.route('/accounts/<int:account_id>', methods=['GET'])
+@secure_route
 def show(account_id):
     account = Account.query.get(account_id)
     if not account:
@@ -27,6 +28,7 @@ def show(account_id):
 
 
 @api.route('/accounts/<int:account_id>/transactions', methods=['GET'])
+@secure_route
 def show_transactions(account_id):
     account = Transaction.query \
         .order_by(Transaction.date) \

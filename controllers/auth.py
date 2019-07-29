@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request, g
 #          request to access the request data
 from models.user import User, UserSchema
 
+
 #these controllers should be kept as 'skinny' as possible so they are easy to understand. Any additional functions we need to write, should be written in the model and used from here
 
 api = Blueprint('auth', __name__)

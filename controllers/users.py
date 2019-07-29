@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, g
 from models.user import User, UserSchema
-
+from lib.secure_route import secure_route
 
 # from lib.secure_route import secure_route
 
@@ -12,6 +12,7 @@ user_schema = UserSchema(exclude=('password', 'id', 'updated_at', 'messages'))
 # ROUTES FOR USERS TO ACCESS
 
 @api.route('/users/<int:user_id>', methods=['GET'])
+@secure_route
 def show(user_id):
     user = User.query.get(user_id)
     if not user:
