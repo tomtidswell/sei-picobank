@@ -14,13 +14,13 @@ class Banking extends React.Component {
   constructor() {
     super()
 
-    this.state = { userId: Auth.getPayload().sub, currentTab: 0 }
+    this.state = { userId: Auth.getPayload().sub, currentTab: 0, accountTransactions: [] }
   }
 
   componentDidMount() {
     let userData = null
-    let accountTransactions = null
 
+    //if we realise that we're not logged in, redirect to the home page
     if(!Auth.getToken()) this.props.history.push('/')
 
     axios.get(`/api/users/${this.state.userId}`,{
@@ -28,14 +28,20 @@ class Banking extends React.Component {
     })
       .then(res => {
         userData = res.data
-        // console.log(userData.accounts[0].id)
-        if(userData.accounts.length)
+        //now we know we do have therefore we do have some accounts, so get the data for the first account
+        if(userData.accounts.length > 0)
           return axios.get(`/api/accounts/${userData.accounts[0].id}/transactions`, {
             headers: { Authorization: `Bearer ${Auth.getToken()}` }
           })
       })
       .then(res => {
-        accountTransactions = res ? res.data : null
+        //if we have user data but no accounts, push to the link page, where we will detect this state and show a message that for first time users without an account, the accounts need to be linked
+        if(userData.accounts.length === 0){
+          this.redirectToLink()
+          return
+        }
+
+        const accountTransactions = res ? res.data : []
         this.setState({ userData, accountTransactions })
       })
       .catch(err => console.log(err))
@@ -99,18 +105,27 @@ class Banking extends React.Component {
       //push the incoming transaction total
       incomingTotal: transactions.reduce((acc,trans) => trans.amount > 0 ? acc += Math.abs(trans.amount) : acc ,0)
     }
+  }
 
+  redirectToLink(){
+    this.props.history.push('/link')
   }
 
 
 
   render() {
-    if(!this.state.userData || !this.state.accountTransactions)
+    //return null the first time we render without user data
+    if(!this.state.userData)
       return null
+
+    // pull out the data from state
     const {userData} = this.state
     let {accountTransactions} = this.state
+
+
     // console.log('user:', userData)
     // console.log('account:', accountTransactions)
+
     accountTransactions = this.addRunningBalance(accountTransactions)
     const outgoingAggCat = this.aggregateCategoriesAndSpend(this.state.accountTransactions, 'debits')
     const incomingAggCat = this.aggregateCategoriesAndSpend(this.state.accountTransactions, 'credits')
@@ -118,8 +133,8 @@ class Banking extends React.Component {
     const thisMonthData = this.extractThisMonth(accountTransactions)
 
     return (
-      <section className="banking-page">
-        <div className="hero bank-head">
+      <section className="link-page">
+        <div className="hero link-head">
           <h1 className="title">your picobank accounts</h1>
         </div>
 
@@ -197,6 +212,7 @@ class Banking extends React.Component {
 
           </div>
         }
+
         {accountTransactions.length > 0 &&
           <Transactions userData={userData} accountTransactions={accountTransactions}/>
         }
@@ -213,6 +229,7 @@ class Banking extends React.Component {
             </div>
           </div>
         }
+
 
       </section>
     )

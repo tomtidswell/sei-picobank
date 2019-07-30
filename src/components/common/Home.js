@@ -41,7 +41,7 @@ class Home extends React.Component {
             <div className="bank-card">
               <h1 className="title">p&#305;coBank</h1>
               <h3 className="samp"><samp>0987 0987 0987 0987</samp></h3>
-              <h6 className="kbd"><samp>YOUR NAME HERE!</samp></h6>
+              <h6 className="kbd"><samp>R. WONDERFUL CUSTOMER</samp></h6>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@ class Home extends React.Component {
             </li>
           </ul>
         </div>
-        
+
         {!Auth.isAuthenticated() &&
           <div className="hero hero-sm" id="register-login">
             <h2 className="subtitle">Get started now!</h2>

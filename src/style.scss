@@ -36,6 +36,13 @@ main{
   background-color: $secondary-colour;
 }
 
+.empty{
+  min-height: 50vh;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+
 .text-base{
   display: inline-block;
   background-color: $base-colour;
