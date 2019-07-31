@@ -18,7 +18,7 @@ section.home-page{
       justify-content: space-between;
       height: 100%;
       & > *{
-        margin: 0;
+        margin: 10px 0;
       }
     }
 
@@ -27,45 +27,56 @@ section.home-page{
   .bank-card{
     width: 350px;
     height: 200px;
-    background-color: $base-colour;
+    background-color: black;
     border-radius: 10px;
     box-shadow: 10px 10px 1rem rgba(48,55,66,6);
     padding: 3px 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: 20px 0;
+    color: $base-colour;
+    
 
     h1{
-      font-size: 3rem;
+      font-size: 2.8rem;
       margin: 0;
     }
   }
 
-
-  // .perspective{
-  //   perspective: 110px;
-  //   position: absolute;
-  //   top: 35%;
-  //   left: 50%;
-  //
-  //   .bank-card{
-  //     width: 350px;
-  //     height: 200px;
-  //     background-color: $base-colour;
-  //     border-radius: 10px;
-  //     box-shadow: 10px 10px 1rem rgba(48,55,66,6);
-  //     padding: 3px 10px;
-  //     transform-style: preserve-3d;
-  //     transform: rotateX(6deg);
-  //     display: flex;
-  //     flex-direction: column;
-  //     justify-content: space-between;
-  //     h1{
-  //       font-size: 3rem;
-  //       margin: 0;
-  //     }
-  //   }
-  // }
+}
 
 
+@media only screen and (max-width: 500px){
+  section.home-page .hero-lg{
+    flex-direction: column;
+    .bank-card{
+      width: 250px;
+      height: 120px;
+      h1{
+        font-size: 1.3rem;
+      }
+      samp{
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+
+  .step{
+    display: block;
+    .step-item{
+      text-align: left;
+      a:before{
+        left: 0;
+        top: calc(50% + 5px);
+      }
+    }
+    .step-item:not(:first-child)::before {
+      width: 2px;
+      height: 100%;
+      left: 0;
+      top: calc(-50% + 5px);
+    }
+  }
 }

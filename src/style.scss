@@ -7,9 +7,11 @@ $secondary-colour: #14afff;
 @import "styleMessagePage";
 @import "styleMenu";
 
-a, a:hover, a:visited, a:active{
+a, a:hover, a:visited, a:active, a:focus{
   color: #3b4351;
   text-decoration: none;
+  outline: 0;
+  box-shadow: none;
 }
 
 
@@ -28,6 +30,16 @@ main{
   section{
     height: 100%;
   }
+}
+
+button.btn{
+  background-color: $base-colour;
+  border: 0;
+  color: rgba(100,100,100,1);
+}
+
+.btn.btn-link{
+  color: black;
 }
 
 .is-base{

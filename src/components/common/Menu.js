@@ -71,7 +71,7 @@ class Menu extends React.Component {
           </article>
 
           <article className="navbar-center">
-            <Link to='/' className="nav-link">
+            <Link to='/' className="">
               <h1 className="title">p&#305;coBank</h1>
             </Link>
           </article>

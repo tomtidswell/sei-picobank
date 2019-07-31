@@ -37,12 +37,10 @@ class Home extends React.Component {
             <p><span className="text-base">Understand your money and how you spend</span></p>
             <p><span className="text-base">Use our analysis to stay in control of your finances </span></p>
           </div>
-          <div className="perspective">
-            <div className="bank-card">
-              <h1 className="title">p&#305;coBank</h1>
-              <h3 className="samp"><samp>0987 0987 0987 0987</samp></h3>
-              <h6 className="kbd"><samp>R. WONDERFUL CUSTOMER</samp></h6>
-            </div>
+          <div className="bank-card">
+            <h1 className="title">p&#305;coBank</h1>
+            <h3 className="samp"><samp>0987 0987 0987 0987</samp></h3>
+            <h6 className="kbd"><samp>R. WONDERFUL CUSTOMER</samp></h6>
           </div>
         </div>
 

@@ -135,7 +135,7 @@ class Banking extends React.Component {
     return (
       <section className="banking-page">
         <div className="hero bank-head">
-          <h1 className="title">your picobank accounts</h1>
+          <h1 className="title">your p&#305;coBank accounts</h1>
         </div>
 
         <ul className="tab tab-block">
