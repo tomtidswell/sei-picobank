@@ -133,8 +133,8 @@ class Banking extends React.Component {
     const thisMonthData = this.extractThisMonth(accountTransactions)
 
     return (
-      <section className="link-page">
-        <div className="hero link-head">
+      <section className="banking-page">
+        <div className="hero bank-head">
           <h1 className="title">your picobank accounts</h1>
         </div>
 

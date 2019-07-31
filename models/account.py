@@ -28,7 +28,7 @@ class Transaction(db.Model, BaseModel):
     # database table
     __tablename__ = 'transactions'
     # fields
-    date = db.Column(db.Date, nullable=False)
+    date = db.Column(db.Date, nullable=True)
     amount = db.Column(db.Float, nullable=False)
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
     description = db.Column(db.String(40), nullable=False)

@@ -1,0 +1,50 @@
+section.link-page{
+  .hero.link-head{
+    background-color: $base-colour;
+  }
+  ul.tab-block{
+    background-color: $base-colour;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+
+
+  .cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    p{
+      margin: 0;
+    }
+    .card{
+      width: 350px;
+      border-radius: 5px;
+      margin: 5px 5px;
+      box-shadow: 5px 5px 1rem rgba(48,55,66,0.5);
+      overflow: hidden;
+
+      .card-image{
+        height: 200px;
+        background-size: cover;
+        background-position: bottom;
+        background-clip: content-box;
+        &.mortgage{
+          background-image: url('./assets/img/mortgage2.jpg');
+        }
+        &.current-account{
+          background-image: url('./assets/img/current-account.jpg');
+          background-position: center;
+        }
+        &.credit-card{
+          background-image: url('./assets/img/credit-card.jpg');
+          background-position: center;
+        }
+      }
+
+    }
+  }
+
+
+
+}

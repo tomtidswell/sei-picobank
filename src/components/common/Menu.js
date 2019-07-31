@@ -87,7 +87,7 @@ class Menu extends React.Component {
                   <ul className="menu">
                     <li className="menu-item">
                       <Link to='/banking'><i className="icon icon-copy"></i> &nbsp;Your Accounts</Link>
-                      <Link to='/link'><i className="icon icon-copy"></i> &nbsp;Link an Account</Link>
+                      <Link to='/link'><i className="icon icon-copy"></i> &nbsp;Link and view Account settings</Link>
                     </li>
                     <li className="divider"></li>
                     <li className="menu-item">

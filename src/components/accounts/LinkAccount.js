@@ -8,7 +8,9 @@ class LinkAccount extends React.Component {
   constructor() {
     super()
 
-    this.state = { userId: Auth.getPayload().sub, currentTab: 'link' }
+    this.state = { userId: Auth.getPayload().sub, currentTab: 'link', accountId: null, accSearch: { account: '' } }
+    this.handleLinkRequest = this.handleLinkRequest.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
@@ -28,11 +30,33 @@ class LinkAccount extends React.Component {
       .catch(err => console.log(err))
   }
 
-  switchTab(tabId){
+  switchTab(tabId, accountId){
     console.log('switching to', tabId)
 
-    this.setState({ currentTab: tabId })
+    this.setState({ currentTab: tabId, accountId })
   }
+
+  handleLinkRequest(e){
+    console.log()
+    if(e)
+      e.preventDefault()
+
+    axios.get('/api/accounts/link', {
+      headers: { Authorization: `Bearer ${Auth.getToken()}` }
+    }, this.state.accSearch)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  handleChange({ target: { name, value } }) {
+    const errors = { ...this.state.errors, [name]: '' }
+    this.setState({ accSearch: { account: value }, errors })
+  }
+
 
 
 
@@ -42,43 +66,85 @@ class LinkAccount extends React.Component {
       return null
 
     // pull out the data from state
-    const {userData} = this.state
+    const {userData, currentTab, accountId} = this.state
+    const accountShown = userData.accounts.filter(account => account.id === accountId)[0]
+    let accountType = ''
 
-    console.log(userData)
+    if(accountShown)
+      switch(accountShown.type) {
+        case 'Current Account': accountType = 'current-account'
+          break
+        case 'Mortgage': accountType = 'mortgage'
+          break
+        case 'Credit Card': accountType = 'credit-card'
+          break
+      }
+
+    console.log('data:', userData, 'tab:', currentTab, 'account:', accountShown)
 
     return (
-      <section className="banking-page">
-        <div className="hero bank-head">
-          <h1 className="title">your picobank accounts</h1>
+      <section className="link-page">
+        <div className="hero link-head">
+          <h1 className="title">set up your p&#305;coBank accounts</h1>
         </div>
 
         <ul className="tab tab-block">
           {//the tabs are mapped from the account data, index is the onClick
             userData.accounts.map((account, index) => (
               <li
-                onClick={()=>this.switchTab(index)}
+                onClick={()=>this.switchTab(index, account.id)}
                 className={`tab-item ${index === this.state.currentTab ? 'active' : '' }`}
                 key={index}>
                 <a className="">{account.type}</a>
               </li>
             ))}
           <li
-            onClick={()=>this.switchTab('link')}
+            onClick={()=>this.switchTab('link', null)}
             className={`tab-item ${this.state.currentTab === 'link' ? 'active' : '' }`}>
             <a className="">Link {userData.accounts.length === 0 ? 'an' : 'another'} account</a>
           </li>
         </ul>
 
-        {userData.accounts.length === 0 &&
-          //this will render if there are no accounts for the user
+        {currentTab === 'link' &&
+          //this will render if the user selects the link tab
           <div className="empty">
             <div className="empty-icon">
               <i className="icon icon-people"></i>
             </div>
-            <p className="empty-title h5">You don&apos;t have any accounts linked to your user</p>
-            <p className="empty-subtitle">Do you want to search for an account?</p>
+            {userData.accounts.length === 0 &&
+              <p className="empty-title h5">You don&apos;t have any accounts linked to your user</p>
+            }
+            {currentTab === 'link' && userData.accounts.length > 0 &&
+              <p className="empty-title h5">Add another account you have with us</p>
+            }
+            <p className="empty-subtitle">Just search for the account using the account number we sent to you.</p>
             <div className="empty-action">
-              <button className="btn btn-primary">Search for an account</button>
+              <div className="input-group">
+                <span className="input-group-addon">Account Number</span>
+                <input type="text"
+                  className="form-input"
+                  placeholder="eg. 01234567"
+                  onChange={this.handleChange}
+                  value={this.state.accSearch.account} />
+                <button className="btn btn-primary input-group-btn" onClick={this.handleLinkRequest}>Search</button>
+              </div>
+            </div>
+          </div>
+        }
+
+
+        {currentTab !== 'link' &&
+          //this will render if the user has chosen to view an account
+          <div className="cards">
+            <div className="card">
+              <div className="card-header">
+                <div className="card-title h5">Your {accountShown.type}</div>
+                <div className="card-subtitle text-gray">
+                  {accountShown.nickname ? accountShown.nickname : 'You havent set a nickname for this account'}
+                </div>
+              </div>
+              <div className={`card-image ${accountType}`}>
+              </div>
             </div>
           </div>
         }

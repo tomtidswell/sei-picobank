@@ -3,6 +3,7 @@ $secondary-colour: #14afff;
 
 @import "styleHomePage";
 @import "styleBankingPage";
+@import "styleLinkPage";
 @import "styleMessagePage";
 @import "styleMenu";
 
@@ -41,6 +42,7 @@ main{
   display: flex;
   flex-flow: column;
   justify-content: center;
+  align-items: center;
 }
 
 .text-base{
