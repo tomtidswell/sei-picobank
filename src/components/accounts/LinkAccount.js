@@ -24,7 +24,6 @@ class LinkAccount extends React.Component {
     })
       .then(res => {
         userData = res.data
-
         this.setState({ userData })
       })
       .catch(err => console.log(err))
@@ -37,15 +36,16 @@ class LinkAccount extends React.Component {
   }
 
   handleLinkRequest(e){
-    console.log()
     if(e)
-      e.preventDefault()
-
+    e.preventDefault()
+    
+    let userData = null
     axios.get('/api/accounts/link', {
       headers: { Authorization: `Bearer ${Auth.getToken()}` }
     }, this.state.accSearch)
       .then(res => {
-        console.log(res.data)
+        userData = res.data
+        this.setState({ userData })
       })
       .catch(err => {
         console.log(err)

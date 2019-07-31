@@ -1,17 +1,19 @@
 from flask import Blueprint, jsonify, request, g
+from app import db
 from models.account import Account, AccountSchema, Transaction, TransactionSchema
+from models.transaction_category import TransCategory, TransCategorySchema
 from models.user import User, UserSchema
 from lib.secure_route import secure_route
-from lib.create_account \
-    import add_transactions_rnd #, add_transactions_bills, add_transactions_income, acc_transfer, categories
+from lib.generate_transactions \
+    import add_transactions_rnd, add_transactions_bills#, add_transactions_income, acc_transfer
 
 
 api = Blueprint('accounts', __name__)
+user_schema = UserSchema(exclude=('password', 'id', 'updated_at', 'messages'))
 account_schema = AccountSchema(exclude=('transactions',))
-# this expanded schema isnt used, but could be to expand the payload sent
-# account_schema_expanded = AccountSchema()
 transaction_schema = TransactionSchema(exclude=('account', 'created_at', 'updated_at'))
 transaction_schema_expanded = TransactionSchema()
+trans_cat_schema = TransCategorySchema()
 
 
 # this is included for debugging purposes, and should be commented out before deployment
@@ -27,38 +29,26 @@ def link():
     user = g.current_user
 
     # if the user has fewer than 3 accounts, pretend we found it and linked it, and actually create it
-    if len(user.accounts) < 3:
-        print('create an account')
+    if len(user.accounts) < 30:
+        account_data = Account(type="Current Account", owner_id=user.id)
+        cat_data = TransCategory.query.all()
+        new_trans = add_transactions_rnd(
+            account=account_data, categories=cat_data, number={"small":10, "medium":5, "large":3}, days=92)
+        new_trans.extend(add_transactions_bills(
+            account=account_data, categories=cat_data, bills=True, days=92))
+        
+        print(new_trans)
 
-        # attempt using schema
-        account_data = {"type": "Current Account", "owner_id": user.id}
-        new_account, errors = account_schema.load(account_data)
-        print('account errors:', errors)
+        for trans in new_trans:
+            db.session.add(trans)
+    
+        db.session.add(account_data)
+        db.session.commit()
 
-        print('new account:', new_account)
-        new_account.owner_id = user.id
-        # attempt using object
-        # new_account = Account(type='Current Account', owner=user.id)
+        # get the refreshed user data
+        user = User.query.get(user.id)
 
-        # now add the transactions for the account
-        new_trans = add_transactions_rnd(account=account_data, n_small=10, days=92)
-        for x in new_trans:
-            new_transaction, errors = transaction_schema_expanded.load(x)
-            print(new_transaction)
-            print(errors)
-
-            new_account.transactions.append(new_transaction)
-        # new_account.transactions.append(new_transactions)
-
-        new_account.save()
-        # seed()
-
-        # print('new trans:', new_trans)
-        # print('new transactions:', new_transactions)
-        # print('transaction errors:', errors)
-
-
-        return jsonify({'success': 'we created it!'}), 201
+        return user_schema.jsonify(user, many=False), 201
 
     # otherwise we pretend we cant find it
     return jsonify({'message': 'not found'}), 404
