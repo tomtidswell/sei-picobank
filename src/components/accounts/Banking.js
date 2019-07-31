@@ -124,13 +124,16 @@ class Banking extends React.Component {
 
 
     // console.log('user:', userData)
-    // console.log('account:', accountTransactions)
+    console.log('account:', accountTransactions)
 
     accountTransactions = this.addRunningBalance(accountTransactions)
     const outgoingAggCat = this.aggregateCategoriesAndSpend(this.state.accountTransactions, 'debits')
     const incomingAggCat = this.aggregateCategoriesAndSpend(this.state.accountTransactions, 'credits')
     const catColours = this.categoryColourSettings(accountTransactions)
     const thisMonthData = this.extractThisMonth(accountTransactions)
+
+    console.log('this month:', thisMonthData)
+
 
     return (
       <section className="banking-page">
@@ -198,7 +201,9 @@ class Banking extends React.Component {
 
                 <div className="card-subtitle text-gray">
                   <p>Your current balance is: £
-                    {thisMonthData.transactions[thisMonthData.transactions.length - 1].balance.toFixed(2)}
+                    {thisMonthData.transactions.length &&
+                      thisMonthData.transactions[thisMonthData.transactions.length - 1].balance.toFixed(2)
+                    }
                   </p>
                   <p>Your total outgoings are: £</p>
                   <p>Your total incomings are: £</p>

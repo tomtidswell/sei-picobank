@@ -59,9 +59,10 @@ button.btn{
 
 .text-base{
   display: inline-block;
-  background-color: $base-colour;
+  background-color: black;
+  color: $base-colour;
   padding: 3px 8px;
-  box-shadow: 10px 10px 1rem rgba(48,55,66,6);
+  box-shadow: -1px -1px $base-colour;
 }
 
 form.form-horizontal input{
