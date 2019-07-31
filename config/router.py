@@ -1,5 +1,5 @@
-from app import app
 import os
+from app import app
 from controllers import auth, accounts, users, messages
 
 app.register_blueprint(users.api, url_prefix='/api')
