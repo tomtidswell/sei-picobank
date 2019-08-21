@@ -29,7 +29,7 @@ def link():
     user = g.current_user
 
     # if the user has fewer than 3 accounts, pretend we found it and linked it, and actually create it
-    if len(user.accounts) < 30:
+    if len(user.accounts) < 3:
         account_data = Account(type="Current Account", owner_id=user.id)
         cat_data = TransCategory.query.all()
         new_trans = add_transactions_rnd(
