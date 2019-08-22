@@ -230,20 +230,6 @@ yarn serve:front
 It's now ready to access on the [localhost](https://localhost:8000).
 
 
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-
 ## Versioning
 
 #### v1
