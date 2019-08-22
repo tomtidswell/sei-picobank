@@ -25,7 +25,7 @@ I'm very proud of the capability and user experience I managed to pack into this
   * linking accounts for the same customer
   * complex database seeding of customer data with random transactions, bills and salary payments
 
-## Overview
+## Overview: front-end
 
 ### Home page
 The home page is designed to be a landing page for all incoming customers if they are not logged in. From this page they can log in or register, and also view some marketing information about the bank.
@@ -55,7 +55,7 @@ The account page is the default logged in view. Once there, the user can see:
 
 * the selected account's analysis
   
-  <img src="src/assets/screens/account2.png" width="300" alt="Accounts analysis>
+  <img src="src/assets/screens/account2.png" width="300" alt="Accounts analysis">
 
 * the selected account's transactions
   
@@ -121,6 +121,8 @@ The resulting data is graphed using a Chart.js plugin for react, [react-chartjs-
 
 The linking account page is the most complex of all. As picoBank is not a real bank(!), I needed to seed the database with new account data on the fly if the user decided to attempt this. If the user already has 3 accounts linked, the back-end will respond with a 404 no account found message to the request. This is to restrict the user from having an unmanagable number of accounts.
 
+<img src="src/assets/screens/accountlink1.png" width="400" alt="Account link">
+
 When a user with less than 3 accounts attempts to link an account by "searching", the back-end will create a new account, link it to the user object, and seed it full of randomised transactions from a number of different categories (small, medium, large, regular bills, outgoing payments, incoming payments and salary):
 
 ```
@@ -142,6 +144,53 @@ When a user with less than 3 accounts attempts to link an account by "searching"
         db.session.commit()
 ```
 
+
+### Account settings page
+
+The user will be able to add a nickname to their accounts (v2 onwards) on the settings page. In version 1, this page displays each individual account with a holding space for the nickname:
+
+<img src="src/assets/screens/accountsettings1.png" width="400" alt="Home Page">
+
+
+## Overview: back-end
+
+### Database design
+
+In version 1 of the application, the database design follows this relationship pattern:
+
+![ERD](src/assets/screens/erd.png)
+
+There will be some significant enhancement made for version 2, to add in support users, and more complex analyitics.
+
+## Routes
+
+|Route                                   |Method |Description|
+|---                                     |---    |---        |
+|**Authorisation**|
+|/register                               |POST   |Register a user|
+|/login                                  |POST   |Log a user in by issuing a jwt token|
+|**User (all secure)**|
+|/users                                  |GET    |Get all users (not used in the front end)|
+|/users/<user_id>                        |GET    |Get user data|
+|**Accounts (all secure)**|
+|/accounts                               |GET    |Get all accounts with minimal data (not used in the front end)|
+|/accounts/link                          |GET    |Create a new account for the user|
+|/accounts/<account_id>                  |GET    |Get all account data for that user|
+|/accounts/<account_id>/transactions     |GET    |Get all transaction data for that account|
+|**Messages (all secure)**|
+|/messages                               |GET    |Get all messages (not used in the front end)|
+|/users/<user_id>/messages               |GET    |Get all messages for a user|
+|/users/<user_id>/messages               |POST   |Create a message for a user|
+|/users/<user_id>/messages/<message_id>/archive |POST   |Send a message to the archive, or back to the inbox|
+
+
+## Future Improvements
+
+With future [versions](#versioning), I intend to add the following functionality:
+
+* Support centre accounts to send messages and view accounts
+* Two way *instant* messaging
+* Scrolling monthly analysis tiles, rather than only current month
 
 ---
 
@@ -201,11 +250,11 @@ Give an example
 One week project, ended with a demo and presentation. MVP was complete, but support accounts were not yet enabled, so two way chat was not possible.
 
 #### v2
-...
+_...work in progress_
 
 
 
 ## Acknowledgments
 
-* Thanks to General Assembly for a little suport through this project
 * I was inspired by the new challenger type banks including Monzo and Revolut
+* I started this project at General Assembly - for their support - thanks!
