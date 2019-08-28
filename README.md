@@ -30,36 +30,29 @@ I'm very proud of the capability and user experience I managed to pack into this
 ### Home page
 The home page is designed to be a landing page for all incoming customers if they are not logged in. From this page they can log in or register, and also view some marketing information about the bank.
 
-<img src="src/assets/screens/home1.png" width="400" alt="Home Page">
+<img src="readme/screens/homefull.gif" width="400" alt="Home Page">
 
-<img src="src/assets/screens/home2.png" width="400" alt="Home Page - marketing info">
-
-<img src="src/assets/screens/home3.png" width="400" alt="Home Page - login and register">
 
 ### User Menu
 The content of the user menu switches once the user has logged in. In a non-logged in state, the user sees links to log in or register, which just scrolls them down the main page:
 
-![Menu - not logged in](src/assets/screens/menu1.png)
+![Menu - not logged in](readme/screens/menu1.png)
 
 In a logged in state, the user has options to see their accounts (the home page for a logged in user), to see the account settings and link page, or to log out:
 
-![Menu - logged in](src/assets/screens/menu2.png)
+![Menu - logged in](readme/screens/menu2.png)
 
 ### Account page
 
 The account page is the default logged in view. Once there, the user can see:
 
 * their different accounts
-  
-  <img src="src/assets/screens/account1.png" width="300" alt="Accounts">
-
 * the selected account's analysis
-  
-  <img src="src/assets/screens/account2.png" width="300" alt="Accounts analysis">
-
 * the selected account's transactions
   
-  <img src="src/assets/screens/account3.png" width="300" alt="Account transactions">
+<img src="readme/screens/accountfull.gif" width="400" alt="Accounts">
+
+  
 
 
 #### Account transactions
@@ -68,7 +61,7 @@ The transactions are the individual items which the database stores for the acco
 
 The categories can be clicked and act as filters to see only that type of transaction in the table:
 
-<img src="src/assets/screens/transactionsfiltered.png" width="500" alt="Filtered transactions">
+<img src="readme/screens/transactionsfiltered.png" width="500" alt="Filtered transactions">
 
 
 #### Account analysis
@@ -76,19 +69,19 @@ The account analysis is achieved by computing different metrics from the raw acc
 
 * Spending by category
 
-<img src="src/assets/screens/analysis1.png" width="300" alt="Spending by category">
+<img src="readme/screens/analysis1.png" width="300" alt="Spending by category">
 
 * Income by category
 
-<img src="src/assets/screens/analysis2.png" width="300" alt="Income by category">
+<img src="readme/screens/analysis2.png" width="300" alt="Income by category">
 
 * Balance over time
 
-<img src="src/assets/screens/analysis3.png" width="300" alt="Balance over time">
+<img src="readme/screens/analysis3.png" width="300" alt="Balance over time">
 
 * This month summary with largest expense
 
-<img src="src/assets/screens/analysis4.png" width="300" alt="This month">
+<img src="readme/screens/analysis4.png" width="300" alt="This month">
 
 
 This analysis is all run in the front end. The first two are very similar, and use the same function for computation, the request is just altered to request 'debits' or 'credits'. Here is an example of how all the transactions are summed and reduced into a single object, with their individual categories (there can be multiple for each transaction) used as the keys:
@@ -121,7 +114,7 @@ The resulting data is graphed using a Chart.js plugin for react, [react-chartjs-
 
 The linking account page is the most complex of all. As picoBank is not a real bank(!), I needed to seed the database with new account data on the fly if the user decided to attempt this. If the user already has 3 accounts linked, the back-end will respond with a 404 no account found message to the request. This is to restrict the user from having an unmanagable number of accounts.
 
-<img src="src/assets/screens/accountlink1.png" width="400" alt="Account link">
+<img src="readme/screens/accountlink1.png" width="400" alt="Account link">
 
 When a user with less than 3 accounts attempts to link an account by "searching", the back-end will create a new account, link it to the user object, and seed it full of randomised transactions from a number of different categories (small, medium, large, regular bills, outgoing payments, incoming payments and salary):
 
@@ -149,7 +142,7 @@ When a user with less than 3 accounts attempts to link an account by "searching"
 
 The user will be able to add a nickname to their accounts (v2 onwards) on the settings page. In version 1, this page displays each individual account with a holding space for the nickname:
 
-<img src="src/assets/screens/accountsettings1.png" width="400" alt="Home Page">
+<img src="readme/screens/accountsettings1.png" width="400" alt="Home Page">
 
 
 ## Overview: back-end
@@ -158,7 +151,7 @@ The user will be able to add a nickname to their accounts (v2 onwards) on the se
 
 In version 1 of the application, the database design follows this relationship pattern:
 
-![ERD](src/assets/screens/erd.png)
+![ERD](readme/screens/erd.png)
 
 There will be some significant enhancement made for version 2, to add in support users, and more complex analyitics.
 
