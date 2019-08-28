@@ -36,6 +36,10 @@ module.exports = {
       '/api': {
         target: 'http://localhost:5000',
         secure: false
+      },
+      '/socket.io': {
+        target: 'http://localhost:5000/socket.io',
+        secure: false
       }
     }
   },

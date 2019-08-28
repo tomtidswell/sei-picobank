@@ -1,7 +1,7 @@
 from functools import wraps #wraps allows us to correct the way errors are reported using decorators
 import jwt
 from flask import request, jsonify, g
-from models.user import User
+from config.models import User
 from config.environment import secret
 
 def secure_route(func):

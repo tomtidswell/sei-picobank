@@ -17,6 +17,25 @@ import Footer from './components/common/Footer'
 import NotFound from './components/common/NotFound'
 import SecureRoute from './components/common/SecureRoute'
 
+console.log('attempting to launch socket')
+
+var socket = io.connect('/test')
+socket.on('my response', function (data) {
+  console.log(data)
+})
+
+var myVar = setInterval(myTimer, 10000);
+
+function myTimer() {
+  var d = new Date();
+  console.log(d.toLocaleTimeString())
+  socket.emit('incoming message', { body: 'this is a message', time: d.toLocaleTimeString() })
+}
+
+socket.on('successfully saved', function (data) {
+  console.log(data)
+})
+
 
 const App = () => {
   return (

@@ -1,20 +1,19 @@
 from flask import Blueprint, jsonify, request, g
-from models.message import Message, MessageSchema
-from models.user import User, UserSchema
+from config.models import Message, MessageSchema, User, UserSchema
 # from lib.secure_route import secure_route
 
 
-api = Blueprint('message', __name__)
+blueprint = Blueprint('message', __name__)
 message_schema = MessageSchema()
 
 
-@api.route('/messages', methods=['GET'])
+@blueprint.route('/messages', methods=['GET'])
 def index():
     messages = Message.query.all()
     return message_schema.jsonify(messages, many=True), 200
 
 
-@api.route('/users/<int:user_id>/messages', methods=['GET'])
+@blueprint.route('/users/<int:user_id>/messages', methods=['GET'])
 def show(user_id):
     messages = Message.query \
         .order_by(Message.created_at) \
@@ -24,7 +23,7 @@ def show(user_id):
     return message_schema.jsonify(messages, many=True), 200
 
 
-@api.route('/users/<int:user_id>/messages', methods=['POST'])
+@blueprint.route('/users/<int:user_id>/messages', methods=['POST'])
 def create(user_id):
     data = request.get_json()
     message, errors = message_schema.load(data)
@@ -39,7 +38,7 @@ def create(user_id):
     return message_schema.jsonify(messages, many=True), 201
 
 
-@api.route('/users/<int:user_id>/messages/<int:message_id>/archive', methods=['POST'])
+@blueprint.route('/users/<int:user_id>/messages/<int:message_id>/archive', methods=['POST'])
 def archive(user_id, message_id):
     message = Message.query.get(message_id)
     if not message:
@@ -55,7 +54,7 @@ def archive(user_id, message_id):
         return jsonify({'message': 'not found'}), 404
     return message_schema.jsonify(messages, many=True), 201
 
-# @api.route('/cats/<int:cat_id>', methods=['PUT'])
+# @blueprint.route('/cats/<int:cat_id>', methods=['PUT'])
 # @secure_route
 # def update(cat_id):
 #     cat = Cat.query.get(cat_id)

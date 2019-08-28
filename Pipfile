@@ -18,6 +18,7 @@ flask-bcrypt = "*"
 psycopg2-binary = "*"
 pyjwt = "*"
 marshmallow-sqlalchemy = "*"
+flask-socketio = "*"
 
 [requires]
 python_version = "3.7"

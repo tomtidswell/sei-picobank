@@ -1,14 +1,23 @@
 from flask import Blueprint, jsonify, request, g
-from app import db
-from models.account import Account, AccountSchema, Transaction, TransactionSchema
-from models.transaction_category import TransCategory, TransCategorySchema
-from models.user import User, UserSchema
+# from app import db
+from config.models import (
+    Account,
+    AccountSchema,
+    Transaction,
+    TransactionSchema,
+    User,
+    UserSchema,
+    TransCategory,
+    TransCategorySchema
+)
+
 from lib.secure_route import secure_route
 from lib.generate_transactions \
-    import add_transactions_rnd, add_transactions_bills#, add_transactions_income, acc_transfer
+    import add_transactions_rnd, add_transactions_bills
+#, add_transactions_income, acc_transfer
 
 
-api = Blueprint('accounts', __name__)
+blueprint = Blueprint('accounts', __name__)
 user_schema = UserSchema(exclude=('password', 'id', 'updated_at', 'messages'))
 account_schema = AccountSchema(exclude=('transactions',))
 transaction_schema = TransactionSchema(exclude=('account', 'created_at', 'updated_at'))
@@ -17,13 +26,13 @@ trans_cat_schema = TransCategorySchema()
 
 
 # this is included for debugging purposes, and should be commented out before deployment
-@api.route('/accounts', methods=['GET'])
+@blueprint.route('/accounts', methods=['GET'])
 def accIndex():
     accounts = Account.query.all()
     return account_schema.jsonify(accounts, many=True), 200
 
 # in this route, we pretend that we are looking for an existing account. What we actually do is create one if the user has fewer than 3 accounts already
-@api.route('/accounts/link', methods=['GET'])
+@blueprint.route('/accounts/link', methods=['GET'])
 @secure_route
 def link():
     user = g.current_user
@@ -37,13 +46,13 @@ def link():
         new_trans.extend(add_transactions_bills(
             account=account_data, categories=cat_data, bills=True, days=92))
         
-        print(new_trans)
+        # print(new_trans)
 
-        for trans in new_trans:
-            db.session.add(trans)
+        # for trans in new_trans:
+        #     db.session.add(trans)
     
-        db.session.add(account_data)
-        db.session.commit()
+        # db.session.add(account_data)
+        # db.session.commit()
 
         # get the refreshed user data
         user = User.query.get(user.id)
@@ -54,7 +63,7 @@ def link():
     return jsonify({'message': 'not found'}), 404
 
 
-@api.route('/accounts/<int:account_id>', methods=['GET'])
+@blueprint.route('/accounts/<int:account_id>', methods=['GET'])
 @secure_route
 def show(account_id):
     account = Account.query.get(account_id)
@@ -63,7 +72,7 @@ def show(account_id):
     return account_schema.jsonify(account), 200
 
 
-@api.route('/accounts/<int:account_id>/transactions', methods=['GET'])
+@blueprint.route('/accounts/<int:account_id>/transactions', methods=['GET'])
 @secure_route
 def show_transactions(account_id):
     account = Transaction.query \
@@ -74,7 +83,7 @@ def show_transactions(account_id):
     return transaction_schema.jsonify(account, many=True), 200
 
 
-# @api.route('/cats/<int:cat_id>', methods=['PUT'])
+# @blueprint.route('/cats/<int:cat_id>', methods=['PUT'])
 # @secure_route
 # def update(cat_id):
 #     cat = Cat.query.get(cat_id)

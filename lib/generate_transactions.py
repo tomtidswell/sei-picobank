@@ -1,6 +1,6 @@
 import datetime
 import random
-from models.account import Transaction
+from config.models import Transaction
 
 small_items = [
     {'desc': 'Tesco supermarket', 'cat': [1, 8]},
