@@ -17,13 +17,26 @@ This was a solo project so all the work you see documented here is my own. The [
   * [SQLAlchemy](https://www.sqlalchemy.org/) - ORM
   * [PostgreSQL](https://www.sqlalchemy.org/) - database
 
-## Key Functionality
+## Wins
 
 I'm very proud of the capability and user experience I managed to pack into this project. picoBank was created to demonstrate that I could integrate different types of application concepts like:
   * customer spending analysis, which I integrated and included alongside some interactive charts
   * instant-style messaging of customer support
   * linking accounts for the same customer
   * complex database seeding of customer data with random transactions, bills and salary payments
+
+## Challenges
+
+Python is a relatively new language for me so most of the challenges I encountered were related to my experience with its differences
+* Seeding a new account with template transactions on the fly using Flask. At first I found the syntax complex, and I ended up with repeated code. This portion still needs refactoring
+* Implementing instant messaging using signal.io - I set this up without guidance after GA, in my next version of the app. It required a complete refactoring of my python code to simplify the application and avoid circular references
+
+## Key Learning
+
+I learned a great deal whilst creating this application, most notably:
+* Integration of signal.io
+* Spending so much time implementing flask was invaluable practice
+* My first use of Spectre, a very lightweight CSS framework
 
 ## Overview: front-end
 
@@ -53,7 +66,6 @@ The account page is the default logged in view. Once there, the user can see:
 <img src="readme/screens/accountfull.gif" width="400" alt="Accounts">
 
   
-
 
 #### Account transactions
 
