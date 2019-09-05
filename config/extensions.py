@@ -7,3 +7,5 @@ bcrypt = Bcrypt()
 db = SQLAlchemy()
 ma = Marshmallow()
 socketio = SocketIO()
+
+

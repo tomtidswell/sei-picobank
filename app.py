@@ -1,6 +1,3 @@
-# https: // github.com/cookiecutter-flask/cookiecutter-flask/blob/4adebd33905a717d68454c8bb306f1944c85c091/%7B % 7Bcookiecutter.app_name % 7D % 7D/%7B % 7Bcookiecutter.app_name % 7D % 7D/app.py
-
-# from threading import Lock
 from flask import Flask #this is the equivalent of express
 from config.environment import db_uri
 from config.extensions import bcrypt, db, ma, socketio, emit
@@ -56,13 +53,13 @@ def register_sockets(app):
     @socketio.on('connect', namespace='/test')
     def test_connect():
         print('Client connected')
-        emit('my response', {'data': 'Connected'})
+        # emit('my response', {'data': 'Connected'})
 
     @socketio.on('disconnect', namespace='/test')
     def test_disconnect():
         print('Client disconnected')
 
-    @socketio.on('incoming message', namespace='/test')
+    @socketio.on('incoming message', namespace='')
     def test_msg_in(args):
         print('we just got a message', args)
         # TODO: save the message

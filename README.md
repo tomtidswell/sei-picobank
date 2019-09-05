@@ -4,11 +4,11 @@ I wanted to create an App which could showcase primarily that I could explore th
 
 This project started life as a General Assembly assignment to build a python based full-stack app. This was a solo project so all the work you see documented here is my own. The [first version](#v1) of this app was created in one week, with a subsequent version worked towards on an ad-hoc basis over the following month.
 
-> [Python and React app](assignment.md)
->
-> Format: Solo
->
-> Duration: 1 week
+Assignment: [Python and React app](assignment.md)
+
+Format: Solo
+
+Duration: 1 week
 
 ## Built With
 
@@ -16,12 +16,14 @@ This project started life as a General Assembly assignment to build a python bas
   * [React](https://reactjs.org/)
   * [Chart.js](https://www.chartjs.org/) - for brightening up the customer analysis
   * [Spectre](https://picturepan2.github.io/spectre/getting-started.html) - CSS Framework
+  * [socket.io](https://socket.io/docs/) - two way event-based communication, used for messaging
 * **Back-end**
   * [Python](https://www.python.org/)
   * [Flask](https://palletsprojects.com/p/flask/) - for helping with the routes
   * [Marshmallow](https://palletsprojects.com/p/flask/) - serialisation
   * [SQLAlchemy](https://www.sqlalchemy.org/) - ORM
   * [PostgreSQL](https://www.sqlalchemy.org/) - database
+  * [flask-socketio](https://flask-socketio.readthedocs.io/en/latest/) - gives Flask access to socket.io functionality
 
 ## Wins
 
@@ -35,12 +37,12 @@ I'm very proud of the capability and user experience I managed to pack into this
 
 Python is a relatively new language for me so most of the challenges I encountered were related to my experience with its differences
 * Seeding a new account with template transactions on the fly using Flask. At first I found the syntax complex, and I ended up with repeated code. This portion still needs refactoring
-* Implementing instant messaging using signal.io - I set this up without guidance after GA, in my next version of the app. It required a complete refactoring of my python code to simplify the application and avoid circular references
+* Implementing instant messaging using socket.io - I set this up without guidance after GA, in my next version of the app. It required a complete refactoring of my python code to simplify the application and avoid circular references
 
 ## Key Learning
 
 I learned a great deal whilst creating this application, most notably:
-* Integration of signal.io
+* Integration of socket.io
 * Spending so much time implementing flask was invaluable practice
 * My first use of Spectre, a very lightweight CSS framework
 
@@ -254,4 +256,5 @@ _...work in progress_
 ## Acknowledgments
 
 * I was inspired by the new challenger type banks including Monzo and Revolut
+* When integrating socket.io I found referencing [CookieCutter Flask](https://github.com/cookiecutter-flask) to be extremely useful for understanding how best to structure complex python apps
 * I started this project at General Assembly - for their support - thanks!

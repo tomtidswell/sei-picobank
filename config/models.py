@@ -13,16 +13,18 @@ Column = db.Column
 String = db.String
 Integer = db.Integer
 Boolean = db.Boolean
+DateTime = db.DateTime
 Table = db.Table
 ForeignKey = db.ForeignKey
 relationship = db.relationship
+
 
 # this is a helper file which enriches the main classes with additional capability to keep the main code readable
 
 class BaseModel:
     id = Column(Integer, primary_key=True)
-    created_at = Column(db.DateTime, default=datetime.utcnow)
-    updated_at = Column(db.DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
 
     #create a function which can shorten our save and delete processes
     def save(self):

@@ -9,7 +9,7 @@ from lib.secure_route import secure_route
 
 
 blueprint = Blueprint('users', __name__)
-user_schema = UserSchema(exclude=('password', 'id', 'updated_at', 'messages'))
+user_schema = UserSchema(exclude=('password', 'updated_at', 'messages'))
 
 
 # ROUTES FOR USERS TO ACCESS

@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request, g
+from marshmallow import validates_schema, ValidationError, fields
 from config.models import Message, MessageSchema, User, UserSchema
+from config.extensions import socketio
 # from lib.secure_route import secure_route
-
 
 blueprint = Blueprint('message', __name__)
 message_schema = MessageSchema()
@@ -25,16 +26,30 @@ def show(user_id):
 
 @blueprint.route('/users/<int:user_id>/messages', methods=['POST'])
 def create(user_id):
+    print(request)
     data = request.get_json()
-    message, errors = message_schema.load(data)
-    if errors:
-        return jsonify(errors), 422
+    print('there is a new message')
+
+    # Validate and deserialize input
+    try:
+        message = message_schema.load(data)
+    except ValidationError as err:
+        return err.messages, 422
+
     message.save()
     messages = Message.query \
         .order_by(Message.created_at) \
         .filter(Message.owner_id == user_id).all()
+    
+    # if we dont find any messages then something went wrong
     if not messages:
         return jsonify({'message': 'not found'}), 404
+    
+    # now all of that is done, ping it out if anyone is listening
+    # emit('new message', {'event': 'A new message was recieved'})
+    socketio.emit('new message', data)
+
+    # and finally return the response to the requestor
     return message_schema.jsonify(messages, many=True), 201
 
 

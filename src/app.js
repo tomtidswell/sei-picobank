@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+// import socket from './lib/Api'
+
 
 import 'spectre.css'
 import '../node_modules/spectre.css/dist/spectre-icons.css'
@@ -10,6 +12,7 @@ import Home from './components/common/Home'
 import Banking from './components/accounts/Banking'
 import LinkAccount from './components/accounts/LinkAccount'
 import SecureMessaging from './components/messaging/SecureMessaging'
+import SupportCentre from './components/support/SupportCentre'
 import Menu from './components/common/Menu'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
@@ -17,25 +20,14 @@ import Footer from './components/common/Footer'
 import NotFound from './components/common/NotFound'
 import SecureRoute from './components/common/SecureRoute'
 
-console.log('attempting to launch socket')
 
-var socket = io.connect('/test')
-socket.on('my response', function (data) {
-  console.log(data)
-})
 
-var myVar = setInterval(myTimer, 10000);
-
-function myTimer() {
-  var d = new Date();
-  console.log(d.toLocaleTimeString())
-  socket.emit('incoming message', { body: 'this is a message', time: d.toLocaleTimeString() })
-}
-
-socket.on('successfully saved', function (data) {
-  console.log(data)
-})
-
+// const myVar = setInterval(myTimer, 10000)
+// function myTimer() {
+//   var d = new Date()
+//   console.log(d.toLocaleTimeString())
+//   socket.emit('incoming message', { body: 'this is a message', time: d.toLocaleTimeString() })
+// }
 
 const App = () => {
   return (
@@ -43,6 +35,7 @@ const App = () => {
       <main>
         <Menu />
         <Switch>
+          <Route exact path="/supportcentre" component={SupportCentre}/>
           <Route exact path="/register" component={Register}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/banking" component={Banking}/>
