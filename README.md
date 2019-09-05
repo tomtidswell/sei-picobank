@@ -2,7 +2,13 @@
 
 I wanted to create an App which could showcase primarily that I could explore the development of a full stack application which was underpinned with Python in the back-end. Up until this point I have mostly worked on social-style applications, where users would post content and browse other user's content; I wanted this project to be different. 
 
-This was a solo project so all the work you see documented here is my own. The [first version](#v1) of this app was created in one week, with a subsequent version worked towards on an ad-hoc basis over the following month.
+This project started life as a General Assembly assignment to build a python based full-stack app. This was a solo project so all the work you see documented here is my own. The [first version](#v1) of this app was created in one week, with a subsequent version worked towards on an ad-hoc basis over the following month.
+
+> [Python and React app](assignment.md)
+>
+> Format: Solo
+>
+> Duration: 1 week
 
 ## Built With
 
