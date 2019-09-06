@@ -59,10 +59,6 @@ class Menu extends React.Component {
                 </a>
                 <ul className="menu">
                   <li className="menu-item">
-                    <Link to='/message'><i className="icon icon-mail"></i> &nbsp;Send us a secure message</Link>
-                  </li>
-                  <li className="divider"></li>
-                  <li className="menu-item">
                     <a href="#"><i className="icon icon-search"></i> &nbsp;FAQs</a>
                   </li>
                 </ul>
@@ -77,37 +73,35 @@ class Menu extends React.Component {
           </article>
 
 
-
           <article className="navbar-section">
             <div className="dropdown dropdown-right">
+              
+              {Auth.isAuthenticated() &&
               <div className="btn-group">
-                <a className="btn btn-link dropdown-toggle" tabIndex="0"><i className="icon icon-people"></i></a>
-
-                {Auth.isAuthenticated() &&
-                  <ul className="menu">
-                    <li className="menu-item">
-                      <Link to='/banking'><i className="icon icon-copy"></i> &nbsp;Your Accounts</Link>
-                      <Link to='/link'><i className="icon icon-copy"></i> &nbsp;Link and view Account settings</Link>
-                    </li>
-                    <li className="divider"></li>
-                    <li className="menu-item">
-                      <a onClick={this.logout}><i className="icon icon-shutdown"></i> &nbsp;Log out</a>
-                    </li>
-                  </ul>
-                }
-                {!Auth.isAuthenticated() &&
-                  <ul className="menu">
-                    <li className="menu-item">
-                      <a href='#register-login' className="nav-link">Log in</a>
-                    </li>
-                    <li className="divider"></li>
-                    <li className="menu-item">
-                      <Link to='/register' className="button">Register for online banking</Link>
-                    </li>
-                  </ul>
-                }
+                <a className="btn btn-link dropdown-toggle" tabIndex="0">
+                  <i className="icon icon-people"></i>
+                </a>
+                <ul className="menu">
+                  <li className="menu-item">
+                    <Link to='/banking'><i className="icon icon-copy"></i> &nbsp;Your Accounts</Link>
+                    <Link to='/link'><i className="icon icon-copy"></i> &nbsp;Link and view Account settings</Link>
+                  </li>
+                  <li className="divider"></li>
+                  <li className="menu-item">
+                    <Link to='/message'><i className="icon icon-mail"></i> &nbsp;Send us a secure message</Link>
+                  </li>
+                  <li className="divider"></li>
+                  <li className="menu-item">
+                    <a onClick={this.logout}><i className="icon icon-shutdown"></i> &nbsp;Log out</a>
+                  </li>
+                </ul>
               </div>
+              }
             </div>
+
+            {!Auth.isAuthenticated() &&
+              <a href='#register-login' className="nav-link">Register or Log in</a>
+            }
           </article>
 
 

@@ -3,7 +3,7 @@ import axios from 'axios'
 import Time from '../../lib/Time'
 // import { Link } from 'react-router-dom'
 // import socket from '../../lib/Api'
-import { subscribeToMessages } from '../../lib/Api'
+
 
 
 
@@ -11,16 +11,16 @@ class SecureMessaging extends React.Component {
   constructor() {
     super()
 
-    subscribeToMessages(newMessage => {
-      const { incomingMessages } = this.state
-      //add the new message into the state
-      incomingMessages.messages.push(newMessage)      
-      //add one to the user counter
-      incomingMessages.userCounts[newMessage.owner_id] ? 
-        incomingMessages.userCounts[newMessage.owner_id]++ : 
-        incomingMessages.userCounts[newMessage.owner_id] = 1
-      this.setState({ incomingMessages })
-    })
+    // subscribeToMessages(newMessage => {
+    //   const { incomingMessages } = this.state
+    //   //add the new message into the state
+    //   incomingMessages.messages.push(newMessage)      
+    //   //add one to the user counter
+    //   incomingMessages.userCounts[newMessage.owner_id] ? 
+    //     incomingMessages.userCounts[newMessage.owner_id]++ : 
+    //     incomingMessages.userCounts[newMessage.owner_id] = 1
+    //   this.setState({ incomingMessages })
+    // })
 
     this.state = { 
       userId: null, 
@@ -66,6 +66,10 @@ class SecureMessaging extends React.Component {
 
   switchUser(userId) {
     console.log(`switching to ${userId}`)
+    // clear the user messages in the props
+    this.props.clearUserMessages(userId)
+
+    // get the data and save to state to switch users
     axios.get(`/api/users/${userId}/messages`)
       .then(res => {
         const allMessages = res.data ? res.data : []
@@ -76,6 +80,9 @@ class SecureMessaging extends React.Component {
   }
 
   handleSendMessage() {
+    // clear the user messages in the props
+    this.props.clearUserMessages(this.state.userId)
+    
     const { newMessageData } = this.state
     axios.post(`/api/users/${this.state.userId}/messages`, {
       ...newMessageData, owner_id: this.state.userId.toString(), incoming: true
@@ -95,11 +102,17 @@ class SecureMessaging extends React.Component {
 
   render() {
 
-    const { allMessages, currentTab, newMessageData, allUsers, userId, incomingMessages } = this.state
+    const { allMessages, newMessageData, allUsers, userId } = this.state
+
+    //as well as destructuring, filter out only those for the current user selected, and add it back in to the master object incomingMessages
+    const { incomingMessages } = this.props
+    
+    incomingMessages.currentUserMessages = 
+      incomingMessages.messages.filter(message => parseInt(message.owner_id) === userId)
 
     // console.log('messages', allMessages)
-    // console.log('tab:', currentTab)
-    console.log('incoming in state', incomingMessages)
+    // console.log('props:', this.props)
+    // console.log('incoming in state', incomingMessages)
 
     return (
       <section className="support-page">
@@ -143,8 +156,8 @@ class SecureMessaging extends React.Component {
                     </div>
                   </div>
                 ))}
-              {//map through the data pulled in from the socket
-                incomingMessages.messages.map((msg, index) => (
+              {//add to the bottom by mapping through the currentUserMessages pulled in from the socket
+                incomingMessages.currentUserMessages.map((msg, index) => (
                   <div className={`card message incoming-message ${msg.incoming ? 'my-message' : ''}`} key={index}>
                     <div className="card-header">
                       <div className="card-title h5">{msg.text}</div>

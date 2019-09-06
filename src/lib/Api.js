@@ -12,12 +12,15 @@ var socket = openSocket.connect() //('/test')
 // //   console.log(data)
 // // })
 
-function subscribeToMessages(cb) {
-  socket.on('new message', data => cb(data))
+function subscribeToUserMessages(cb) {
+  socket.on('new user message', data => cb(data))
+}
+function subscribeToSupportMessages(cb) {
+  socket.on('new support message', data => cb(data))
 }
 
 
-export { subscribeToMessages }
+export { subscribeToUserMessages, subscribeToSupportMessages }
 
 
 

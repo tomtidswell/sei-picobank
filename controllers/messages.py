@@ -26,9 +26,9 @@ def show(user_id):
 
 @blueprint.route('/users/<int:user_id>/messages', methods=['POST'])
 def create(user_id):
-    print(request)
+    # print(request)
     data = request.get_json()
-    print('there is a new message')
+    # print('there is a new message', data)
 
     # Validate and deserialize input
     try:
@@ -46,8 +46,12 @@ def create(user_id):
         return jsonify({'message': 'not found'}), 404
     
     # now all of that is done, ping it out if anyone is listening
-    # emit('new message', {'event': 'A new message was recieved'})
-    socketio.emit('new message', data)
+    # decide if it is a user message, or a support message, and emit it appropriately
+    # do this on the message schema not the raw data so that we have the optional field 'incoming' populated
+    if message.incoming:
+        socketio.emit('new support message', data)
+    else:
+        socketio.emit('new user message', data)
 
     # and finally return the response to the requestor
     return message_schema.jsonify(messages, many=True), 201

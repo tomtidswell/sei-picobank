@@ -17,7 +17,7 @@ class LinkAccount extends React.Component {
     let userData = null
 
     //if we realise that we're not logged in, redirect to the home page
-    if(!Auth.getToken()) this.props.history.push('/')
+    if (!Auth.getToken()) this.props.history.push('/')
 
     axios.get(`/api/users/${this.state.userId}`,{
       headers: { Authorization: `Bearer ${Auth.getToken()}` }
@@ -36,8 +36,7 @@ class LinkAccount extends React.Component {
   }
 
   handleLinkRequest(e){
-    if(e)
-    e.preventDefault()
+    if (e) e.preventDefault()
     
     let userData = null
     axios.get('/api/accounts/link', {
@@ -62,16 +61,16 @@ class LinkAccount extends React.Component {
 
   render() {
     //return null the first time we render without user data
-    if(!this.state.userData)
+    if (!this.state.userData)
       return null
 
     // pull out the data from state
-    const {userData, currentTab, accountId} = this.state
+    const { userData, currentTab, accountId } = this.state
     const accountShown = userData.accounts.filter(account => account.id === accountId)[0]
     let accountType = ''
 
-    if(accountShown)
-      switch(accountShown.type) {
+    if (accountShown)
+      switch (accountShown.type) {
         case 'Current Account': accountType = 'current-account'
           break
         case 'Mortgage': accountType = 'mortgage'

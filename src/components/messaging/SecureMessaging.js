@@ -3,12 +3,20 @@ import axios from 'axios'
 import Time from '../../lib/Time'
 // import { Link } from 'react-router-dom'
 import NewMessageModal from './NewMessageModal'
+import Auth from '../../lib/Auth'
 
 class SecureMessaging extends React.Component {
   constructor() {
     super()
 
-    this.state = { userId: 1, currentTab: 'inbox', allMessages: [], newMessageData: {}, modalActive: false }
+    this.state = { 
+      userId: Auth.getPayload().sub, 
+      currentTab: 'inbox', 
+      allMessages: [], 
+      newMessageData: {}, 
+      modalActive: false 
+    }
+    
     this.handleChange = this.handleChange.bind(this)
     this.handleSendMessage = this.handleSendMessage.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
@@ -62,7 +70,10 @@ class SecureMessaging extends React.Component {
 
 
   render() {
-
+    //as well as destructuring, filter out only those for the current user selected, and add it back in to the master object incomingMessages
+    const { incomingMessages } = this.props
+    incomingMessages.currentUserMessages =
+      incomingMessages.messages.filter(message => parseInt(message.owner_id) === userId)
     const { allMessages, currentTab, newMessageData } = this.state
     const messages = allMessages.filter(message => {
       if(currentTab === 'inbox' && !message.archived) return true
