@@ -38,9 +38,10 @@ class Home extends React.Component {
       <section className="home-page">
         <div className="hero hero-lg">
           <div className="titles">
-            <h2 className="subtitle"><span className="text-base">We&apos;re different</span></h2>
+            <h2><span className="text-base">We&apos;re different</span></h2>
             <p><span className="text-base">Understand your money and how you spend</span></p>
-            <p><span className="text-base">Use our analysis to stay in control of your finances </span></p>
+            <p><span className="text-base">Stay in control of your finances</span></p>
+            <p><span className="text-base">We&apos;re here to help, message us any time</span></p>
           </div>
           <div className="bank-card">
             <h1 className="title">p&#305;coBank</h1>
