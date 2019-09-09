@@ -20,12 +20,10 @@ class Home extends React.Component {
     this.setState({ application: !this.state.application })
   }
 
-  handleLogin(isSupport){
-    console.log('handling login:', Auth.getPayload())
-    
-    isSupport ? 
-      this.props.history.push('/supportcentre') :
-      this.props.history.push('/banking')
+  handleLogin(){
+    Auth.getPayload().support ? 
+      this.props.history.push('/banking') :
+      this.props.history.push('/supportcentre')
 
     window.scrollTo(0, 0)
   }

@@ -24,8 +24,8 @@ class Login extends React.Component {
     axios.post('/api/login', this.state.data)
       .then(res => {
         Auth.setToken(res.data.token)
-        console.log('login response:',res.data)
-        this.props.handleLogin(res.data.support)
+        // console.log('login response:',res.data)
+        this.props.handleLogin()
       })
       .catch(err => {
         console.log(err)

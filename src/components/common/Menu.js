@@ -17,7 +17,8 @@ class Menu extends React.Component {
   }
 
   getUserId() {
-    this.setState({ userId: Auth.getPayload().sub })
+    const payload = Auth.getPayload()
+    this.setState({ userId: payload.sub, supportUser: payload.support })
   }
 
   componentDidUpdate() {
@@ -46,7 +47,8 @@ class Menu extends React.Component {
 
   render() {
     
-    const isSupportMenu = this.props.history.location.pathname === '/supportcentre'
+    //identify if the user has logged in and has a token
+    const isSupportMenu = this.state.supportUser
 
     
     return (
