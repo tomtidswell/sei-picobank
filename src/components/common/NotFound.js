@@ -2,8 +2,6 @@ import React from 'react'
 
 const NotFound = ( prop ) => {
   
-  // console.log('props', prop)
-  
   setTimeout(() => {
     prop.history.push('/')
   }, 3000)
