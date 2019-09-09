@@ -3,6 +3,9 @@ class Time{
   static timeSince(timestamp){
     const timeStampDate = new Date(timestamp)
     const timeNow = new Date()
+
+    console.log(timeStampDate, timeNow)
+    
     const differential = timeNow - timeStampDate
 
     var daysDiff = Math.floor((differential) / (1000 * 60 * 60 * 24))

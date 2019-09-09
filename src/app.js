@@ -17,7 +17,7 @@ import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Footer from './components/common/Footer'
 import NotFound from './components/common/NotFound'
-import SecureRoute from './components/common/SecureRoute'
+// import SecureRoute from './components/common/SecureRoute'
 
 
 class App extends Component {
@@ -96,14 +96,14 @@ class App extends Component {
             <Route exact path="/supportcentre" render={(props) => 
               <SupportCentre {...props} 
                 incomingMessages={this.state.supportMessages} 
-                clearUserMessages={this.clearSupportMessages} 
+                clearMessages={this.clearSupportMessages} 
               />} 
             />
 
             <Route exact path="/message" render={(props) => 
               <SecureMessaging {...props} 
                 incomingMessages={this.state.userMessages} 
-                clearUserMessages={this.clearUserMessages} 
+                clearMessages={this.clearUserMessages} 
               />} 
             />
 

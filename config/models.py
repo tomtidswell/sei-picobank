@@ -23,8 +23,8 @@ relationship = db.relationship
 
 class BaseModel:
     id = Column(Integer, primary_key=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now)
 
     #create a function which can shorten our save and delete processes
     def save(self):

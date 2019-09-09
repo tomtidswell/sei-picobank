@@ -50,9 +50,12 @@ def create(user_id):
     # do this on the message schema not the raw data so that we have the optional field 'incoming' populated
     if message.incoming:
         socketio.emit('new support message', data)
+        print('sent message')
     else:
         socketio.emit('new user message', data)
+        print('sent message')
 
+    print(message, message.created_at)
     # and finally return the response to the requestor
     return message_schema.jsonify(messages, many=True), 201
 

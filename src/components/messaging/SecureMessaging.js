@@ -13,19 +13,22 @@ class SecureMessaging extends React.Component {
       userId: Auth.getPayload().sub, 
       currentTab: 'inbox', 
       allMessages: [], 
-      newMessageData: {}, 
+      newMessageData: { text: '' }, 
       modalActive: false 
     }
-    
+
     this.handleChange = this.handleChange.bind(this)
     this.handleSendMessage = this.handleSendMessage.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
   }
 
   componentDidMount() {
+    // clear the support messages in the props
+    this.props.clearMessages(this.state.userId)
+    // then go fetch the messages
     axios.get(`/api/users/${this.state.userId}/messages`)
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         const allMessages = res.data ? res.data : []
         this.setState({ allMessages })
       })
@@ -37,7 +40,9 @@ class SecureMessaging extends React.Component {
   }
 
   archiveMessage(message){
-    console.log(`archiving ${message}`)
+    // clear the support messages in the props
+    this.props.clearMessages(this.state.userId)
+    // console.log(`archiving ${message}`)
     axios.post(`/api/users/${this.state.userId}/messages/${message}/archive`)
       .then(res => {
         const allMessages = res.data ? res.data : []
@@ -47,19 +52,25 @@ class SecureMessaging extends React.Component {
   }
 
   handleSendMessage(){
+    // clear the support messages in the props
+    this.props.clearMessages(this.state.userId)
     const { newMessageData } = this.state
     axios.post(`/api/users/${this.state.userId}/messages`,{
       ...newMessageData, owner_id: this.state.userId.toString()
     })
       .then(res => {
         const allMessages = res.data ? res.data : []
-        this.setState({ allMessages, newMessageData: {}, modalActive: false })
+        console.log('clearing:', newMessageData)
+        newMessageData.text = ''
+        this.setState({ allMessages, newMessageData, modalActive: false })
       })
       .catch(err => console.log(err))
   }
 
-  handleChange({ target: { value, name }}){
+  handleChange({ target: { value, name } }){
     const newMessageData = { [name]: value }
+    console.log('message:', newMessageData)
+
     this.setState({ newMessageData })
   }
 
@@ -70,19 +81,27 @@ class SecureMessaging extends React.Component {
 
 
   render() {
+    
+    const { allMessages, currentTab, newMessageData, userId } = this.state
+    
     //as well as destructuring, filter out only those for the current user selected, and add it back in to the master object incomingMessages
     const { incomingMessages } = this.props
     incomingMessages.currentUserMessages =
-      incomingMessages.messages.filter(message => parseInt(message.owner_id) === userId)
-    const { allMessages, currentTab, newMessageData } = this.state
+      incomingMessages.messages.filter(message => {
+        // console.log(parseInt(message.owner_id), parseInt(userId))
+        return parseInt(message.owner_id) === parseInt(userId)
+      })
+
     const messages = allMessages.filter(message => {
-      if(currentTab === 'inbox' && !message.archived) return true
-      if(currentTab === 'archive' && message.archived) return true
+      if (currentTab === 'inbox' && !message.archived) return true
+      if (currentTab === 'archive' && message.archived) return true
     })
 
     // console.log('messages', messages)
     // console.log('tab:', currentTab)
-    // console.log(this.state.newMessageData)
+    // console.log('messages state:', this.state)
+    // console.log('incoming in state', incomingMessages)
+    // console.log('current user:', parseInt(userId))
 
     return (
       <section className="message-page">
@@ -120,24 +139,38 @@ class SecureMessaging extends React.Component {
 
 
 
-        {messages.length > 0 &&
+        {(messages.length > 0 || incomingMessages.currentUserMessages.length > 0) &&
           <div className="messages">
-            {messages.map((msg, index) => (
-              <div className={`card message ${msg.incoming ? '' : 'my-message'}`} key={index}>
-                <div className="card-header">
-                  <div className="card-title h5">{msg.text}</div>
-                  <div className="card-subtitle text-gray">
-                    <a className="archive" onClick={()=>this.archiveMessage(msg.id)}>
-                      {currentTab === 'archive' ? 'Send to inbox' : 'Archive' }
-                    </a>
-                    &nbsp;| {msg.incoming ? 'Received' : 'Sent'}&nbsp;
-                    {Time.timeSince(msg.created_at)}
+            {//map throught the data found in the database
+              messages.map((msg, index) => (
+                <div className={`card message ${msg.incoming ? '' : 'my-message'}`} key={index}>
+                  <div className="card-header">
+                    <div className="card-title h5">{msg.text}</div>
+                    <div className="card-subtitle text-gray">
+                      <a className="archive" onClick={()=>this.archiveMessage(msg.id)}>
+                        {currentTab === 'archive' ? 'Send to inbox' : 'Archive' }
+                      </a>
+                      &nbsp;| {msg.incoming ? 'Received' : 'Sent'}&nbsp;
+                      {Time.timeSince(msg.created_at)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            {//add to the bottom by mapping through the currentUserMessages pulled in from the socket
+              incomingMessages.currentUserMessages.map((msg, index) => (
+                <div className={`card message incoming-message ${msg.incoming ? '' : 'my-message'}`} key={index}>
+                  <div className="card-header">
+                    <div className="card-title h5">{msg.text}</div>
+                    <div className="card-subtitle text-gray">
+                      {msg.incoming ? 'Received' : 'Sent'} just now
+                    </div>
+                  </div>
+                </div>
+              ))}
           </div>
         }
+
+        
 
         {messages.length === 0 &&
           <div className="empty">

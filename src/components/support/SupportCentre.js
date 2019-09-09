@@ -67,7 +67,7 @@ class SecureMessaging extends React.Component {
   switchUser(userId) {
     console.log(`switching to ${userId}`)
     // clear the user messages in the props
-    this.props.clearUserMessages(userId)
+    this.props.clearMessages(userId)
 
     // get the data and save to state to switch users
     axios.get(`/api/users/${userId}/messages`)
@@ -81,7 +81,7 @@ class SecureMessaging extends React.Component {
 
   handleSendMessage() {
     // clear the user messages in the props
-    this.props.clearUserMessages(this.state.userId)
+    this.props.clearMessages(this.state.userId)
     
     const { newMessageData } = this.state
     axios.post(`/api/users/${this.state.userId}/messages`, {
