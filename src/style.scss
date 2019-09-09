@@ -1,5 +1,7 @@
 $base-colour: #ffda14;
+$light-colour: #ffee90;
 $secondary-colour: #14afff;
+$tertiary-colour: #464646;
 
 @import "styleHomePage";
 @import "styleBankingPage";
@@ -14,6 +16,16 @@ a, a:hover, a:visited, a:active, a:focus{
   text-decoration: none;
   outline: 0;
   box-shadow: none;
+}
+
+a.btn{
+  background-color: #ffda14;
+  border: 0;
+  color: #646464;
+}
+
+.btn:focus, .btn:hover {
+    background: $light-colour;
 }
 
 
@@ -49,6 +61,10 @@ button.btn{
 }
 .is-secondary{
   background-color: $secondary-colour;
+}
+.is-tertiary{
+  background-color: $tertiary-colour;
+  color: white;
 }
 
 .empty{

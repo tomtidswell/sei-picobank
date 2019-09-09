@@ -21,9 +21,11 @@ class Home extends React.Component {
   }
 
   handleLogin(){
+    console.log('is support', Auth.getPayload().support)
+    
     Auth.getPayload().support ? 
-      this.props.history.push('/banking') :
-      this.props.history.push('/supportcentre')
+      this.props.history.push('/supportcentre') :
+      this.props.history.push('/banking')
 
     window.scrollTo(0, 0)
   }
@@ -50,17 +52,19 @@ class Home extends React.Component {
         <div className="hero hero-sm is-right">
           <h5>Ready to take advantage or our top class features? </h5>
           <span>
-            <button className="btn" onClick={()=>this.toggleApplication()}>Apply online</button> it only takes a few minutes.
+            <button className="btn" onClick={()=>this.toggleApplication()}>Submit an application online</button> it only takes a few minutes.
           </span>
           <NewApplication modalActive={this.state.application} toggleModal={this.toggleApplication}/>
         </div>
 
-        <div className="hero hero-sm">
-          <h5 className="subtitle">Already applied for one of our amazing accounts? </h5>
-          <span>
-            <button className="btn">Sign up now</button> to manage your account online and link your accounts.
-          </span>
-        </div>
+        {!Auth.isAuthenticated() &&
+          <div className="hero hero-sm">
+            <h5 className="subtitle">Already applied for one of our amazing accounts? </h5>
+            <span>
+              <a className="btn" href="#register-login">Sign up now</a> to manage your account online and link your accounts.
+            </span>
+          </div>
+        }
 
 
         <div className="hero bg-gray">
@@ -105,7 +109,7 @@ class Home extends React.Component {
           </div>
         }
 
-        <div className="hero is-base">
+        <div className="hero is-tertiary">
           <h2 className="subtitle">Dont just take our word for it!</h2>
           <blockquote>
             <p>Something that someone said once that we spun and then spun again</p>
