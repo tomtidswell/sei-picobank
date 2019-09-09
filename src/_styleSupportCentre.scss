@@ -2,19 +2,17 @@ section.support-page{
 
   height: 100vh;
   overflow: hidden;
-
-  .hero.message-head{
-    background-color: $base-colour;
-    border-bottom: .05rem solid #dadee4;
-    padding-bottom: 0;
-  }
+  display: flex;
+  flex-direction: column;
 
   .message-body{
     position: relative;
+    flex-grow: 1;
     display: flex;
     flex-flow: row;
     justify-content: center;
     padding: 0;
+    margin-top: 72px;
     height: 60vh;
 
     & > *{
@@ -82,7 +80,7 @@ section.support-page{
   }
 
   .message-bottom{
-    background-color: $base-colour;
+    background-color: $secondary-colour;
     border-top: .05rem solid #dadee4;
   }
 

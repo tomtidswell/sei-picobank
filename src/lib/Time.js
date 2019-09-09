@@ -4,7 +4,7 @@ class Time{
     const timeStampDate = new Date(timestamp)
     const timeNow = new Date()
 
-    console.log(timeStampDate, timeNow)
+    // console.log(timeStampDate, timeNow)
     
     const differential = timeNow - timeStampDate
 

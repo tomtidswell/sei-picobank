@@ -17,7 +17,8 @@ import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Footer from './components/common/Footer'
 import NotFound from './components/common/NotFound'
-// import SecureRoute from './components/common/SecureRoute'
+import SecureCustomerRoute from './components/common/SecureCustomerRoute'
+import SecureSupportRoute from './components/common/SecureSupportRoute'
 
 
 class App extends Component {
@@ -93,24 +94,24 @@ class App extends Component {
         <main>
           <Menu />
           <Switch>
-            <Route exact path="/supportcentre" render={(props) => 
+            <SecureSupportRoute exact path="/supportcentre" render={(props) => 
               <SupportCentre {...props} 
                 incomingMessages={this.state.supportMessages} 
                 clearMessages={this.clearSupportMessages} 
               />} 
             />
 
-            <Route exact path="/message" render={(props) => 
+            <SecureCustomerRoute exact path="/message" render={(props) => 
               <SecureMessaging {...props} 
                 incomingMessages={this.state.userMessages} 
                 clearMessages={this.clearUserMessages} 
               />} 
             />
 
-            <Route exact path="/register" component={Register}/>
-            <Route exact path="/login" component={Login}/>
-            <Route exact path="/banking" component={Banking}/>
-            <Route exact path="/link" component={LinkAccount}/>
+            {/* <Route exact path="/register" component={Register}/>
+            <Route exact path="/login" component={Login}/> */}
+            <SecureCustomerRoute exact path="/banking" component={Banking}/>
+            <SecureCustomerRoute exact path="/link" component={LinkAccount}/>
             <Route exact path="/" component={Home}/>
             <Route path="/*" component={NotFound}/>
           </Switch>

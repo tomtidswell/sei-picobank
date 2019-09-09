@@ -19,13 +19,13 @@ class Login extends React.Component {
   }
 
   handleSubmit(e) {
-    if(e)
+    if (e)
       e.preventDefault()
     axios.post('/api/login', this.state.data)
       .then(res => {
         Auth.setToken(res.data.token)
-        this.props.handleLogin()
-        console.log(res.data)
+        console.log('login response:',res.data)
+        this.props.handleLogin(res.data.support)
       })
       .catch(err => {
         console.log(err)
@@ -34,7 +34,7 @@ class Login extends React.Component {
   }
 
   render() {
-    console.log('loginprops', this.props)
+    // console.log('loginprops', this.props)
     return (
 
 

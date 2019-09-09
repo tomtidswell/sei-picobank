@@ -57,7 +57,7 @@ class SecureMessaging extends React.Component {
 
     axios.get('/api/users')
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         const allUsers = res.data ? res.data : []
         this.setState({ allUsers })
       })
@@ -73,7 +73,7 @@ class SecureMessaging extends React.Component {
     axios.get(`/api/users/${userId}/messages`)
       .then(res => {
         const allMessages = res.data ? res.data : []
-        console.log(allMessages)
+        // console.log(allMessages)
         this.setState({ allMessages, userId })
       })
       .catch(err => console.log(err))
@@ -102,7 +102,10 @@ class SecureMessaging extends React.Component {
 
   render() {
 
-    const { allMessages, newMessageData, allUsers, userId } = this.state
+    const { allMessages, newMessageData, userId } = this.state
+
+    //filter out the support users - we dont need to send them any messages
+    const allUsers = this.state.allUsers.filter(user => !user.support)
 
     //as well as destructuring, filter out only those for the current user selected, and add it back in to the master object incomingMessages
     const { incomingMessages } = this.props
@@ -116,9 +119,6 @@ class SecureMessaging extends React.Component {
 
     return (
       <section className="support-page">
-        <div className="hero message-head">
-          <h1 className="title">Customer Support Centre</h1>
-        </div>
 
         <div className="message-body">
           <ul className="menu">

@@ -45,31 +45,41 @@ class Menu extends React.Component {
   }
 
   render() {
+    
+    const isSupportMenu = this.props.history.location.pathname === '/supportcentre'
 
+    
     return (
       <Fragment>
 
-        <header className="navbar is-base p-fixed">
+        <header className={`navbar p-fixed ${isSupportMenu ? 'is-secondary' : 'is-base'}`}>
 
           <article className="navbar-section">
-            <div className="dropdown">
-              <div className="btn-group">
-                <a className="btn btn-link dropdown-toggle" tabIndex="0">
-                  &nbsp;Help <i className="icon icon-caret"></i>
-                </a>
-                <ul className="menu">
-                  <li className="menu-item">
-                    <a href="#"><i className="icon icon-search"></i> &nbsp;FAQs</a>
-                  </li>
-                </ul>
+            {!isSupportMenu &&
+              <div className="dropdown">
+                <div className="btn-group">
+                  <a className="btn btn-link dropdown-toggle" tabIndex="0">
+                    &nbsp;Help <i className="icon icon-caret"></i>
+                  </a>
+                  <ul className="menu">
+                    <li className="menu-item">
+                      <a href="#"><i className="icon icon-search"></i> &nbsp;FAQs</a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
+            }
           </article>
 
           <article className="navbar-center">
-            <Link to='/' className="">
-              <h1 className="title">p&#305;coBank</h1>
-            </Link>
+            {isSupportMenu &&
+              <h1 className="title">p&#305;coBank support centre</h1>
+            }
+            {!isSupportMenu &&
+              <Link to='/' className="">
+                <h1 className="title">p&#305;coBank</h1>
+              </Link>
+            }
           </article>
 
 
@@ -77,25 +87,35 @@ class Menu extends React.Component {
             <div className="dropdown dropdown-right">
               
               {Auth.isAuthenticated() &&
-              <div className="btn-group">
-                <a className="btn btn-link dropdown-toggle" tabIndex="0">
-                  <i className="icon icon-people"></i>
-                </a>
-                <ul className="menu">
-                  <li className="menu-item">
-                    <Link to='/banking'><i className="icon icon-copy"></i> &nbsp;Your Accounts</Link>
-                    <Link to='/link'><i className="icon icon-copy"></i> &nbsp;Link and view Account settings</Link>
-                  </li>
-                  <li className="divider"></li>
-                  <li className="menu-item">
-                    <Link to='/message'><i className="icon icon-mail"></i> &nbsp;Send us a secure message</Link>
-                  </li>
-                  <li className="divider"></li>
-                  <li className="menu-item">
-                    <a onClick={this.logout}><i className="icon icon-shutdown"></i> &nbsp;Log out</a>
-                  </li>
-                </ul>
-              </div>
+                <div className="btn-group">
+
+                  <a className="btn btn-link dropdown-toggle" tabIndex="0">
+                    <i className="icon icon-people"></i>
+                  </a>
+                  {!isSupportMenu &&
+                  <ul className="menu">
+                    <li className="menu-item">
+                      <Link to='/banking'><i className="icon icon-copy"></i> &nbsp;Your Accounts</Link>
+                      <Link to='/link'><i className="icon icon-copy"></i> &nbsp;Link and view Account settings</Link>
+                    </li>
+                    <li className="divider"></li>
+                    <li className="menu-item">
+                      <Link to='/message'><i className="icon icon-mail"></i> &nbsp;Send us a secure message</Link>
+                    </li>
+                    <li className="divider"></li>
+                    <li className="menu-item">
+                      <a onClick={this.logout}><i className="icon icon-shutdown"></i> &nbsp;Log out</a>
+                    </li>
+                  </ul>
+                  }
+                  {isSupportMenu &&
+                  <ul className="menu">
+                    <li className="menu-item">
+                      <a onClick={this.logout}><i className="icon icon-shutdown"></i> &nbsp;Log out</a>
+                    </li>
+                  </ul>
+                  }
+                </div>
               }
             </div>
 

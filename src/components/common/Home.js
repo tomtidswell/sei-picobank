@@ -20,14 +20,19 @@ class Home extends React.Component {
     this.setState({ application: !this.state.application })
   }
 
-  handleLogin(){
-    this.props.history.push('/banking')
+  handleLogin(isSupport){
+    console.log('handling login:', Auth.getPayload())
+    
+    isSupport ? 
+      this.props.history.push('/supportcentre') :
+      this.props.history.push('/banking')
+
     window.scrollTo(0, 0)
   }
 
 
   render() {
-    console.log('homeprops', this.props)
+    // console.log('homeprops', this.props)
 
     return (
       <section className="home-page">
