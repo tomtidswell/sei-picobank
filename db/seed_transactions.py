@@ -1,7 +1,6 @@
 import datetime
 import random
-from models.account import Transaction
-from models.transaction_category import TransCategory
+from config.models import Transaction, TransCategory
 
 categories = dict(
     shopping=TransCategory(category='Shopping', colour='#8ad7ff'),

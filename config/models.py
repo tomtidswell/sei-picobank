@@ -46,6 +46,7 @@ class User(db.Model, BaseModel):
     __tablename__ = 'users'
     email = Column(String(128), nullable=False, unique=True)
     password_hash = Column(String(128), nullable=False)
+    support = Column(Boolean, default=False)
 
     #this allows us to use the hybrid property password, which will be passed to sqlalchemy from the marshmallow schema now it's defined
     @hybrid_property
@@ -68,7 +69,8 @@ class User(db.Model, BaseModel):
         payload = {
             'exp': datetime.utcnow() + timedelta(days=1),
             'iat': datetime.utcnow(),
-            'sub': self.id
+            'sub': self.id,
+            'support': self.support
         }
         #encode the data and into the token using the secret and the hs256 algorithm, and then convert it to utf-8 for transmission
         token = jwt.encode(payload, secret, 'HS256').decode('utf-8')
