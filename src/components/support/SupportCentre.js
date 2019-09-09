@@ -11,17 +11,6 @@ class SecureMessaging extends React.Component {
   constructor() {
     super()
 
-    // subscribeToMessages(newMessage => {
-    //   const { incomingMessages } = this.state
-    //   //add the new message into the state
-    //   incomingMessages.messages.push(newMessage)      
-    //   //add one to the user counter
-    //   incomingMessages.userCounts[newMessage.owner_id] ? 
-    //     incomingMessages.userCounts[newMessage.owner_id]++ : 
-    //     incomingMessages.userCounts[newMessage.owner_id] = 1
-    //   this.setState({ incomingMessages })
-    // })
-
     this.state = { 
       userId: null, 
       allMessages: [], 
