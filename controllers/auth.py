@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, request, g
 #          jsonify to serialise and send the response when we arent using the schema to do that
 #          request to access the request data
 from config.models import User, UserSchema
+from marshmallow import ValidationError
 
 
 #these controllers should be kept as 'skinny' as possible so they are easy to understand. Any additional functions we need to write, should be written in the model and used from here
@@ -14,9 +15,11 @@ user_schema = UserSchema()
 @blueprint.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    user, errors = user_schema.load(data) #validate the data against the schema
-    if errors:
-        return jsonify(errors), 422
+    try:
+        user = user_schema.load(data)
+    except ValidationError as errors:
+        return jsonify({'errors': errors.messages}), 422
+
     user.save()
     return jsonify({'message': 'Registration Successful'}), 201
 

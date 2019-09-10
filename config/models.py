@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from marshmallow import validates_schema, ValidationError, fields
+from marshmallow import validates_schema, ValidationError, fields, validate
 import jwt
 # this allows us to create virtual (hybrid) fields that arent saved but are included on the interface
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -81,22 +81,35 @@ class User(db.Model, BaseModel):
 class UserSchema(ma.ModelSchema, BaseSchema):
 
     @validates_schema
-    def check_passwords_match(self, data):
+    def check_passwords_match(self, data, **kwargs):
         if data.get('password') != data.get('password_confirmation'):
             #use marshmallow's extension to raise the error for field password_confirmation
             raise ValidationError('Passwords do not match',
                                   'password_confirmation')
 
     @validates_schema
-    def additional_request_validation(self, data):
-        if data.get('password') == '':
-            raise ValidationError('Password cannot be blank', 'password')
+    def not_unique_in_db(self, data, **kwargs):
+        user = User.query.filter_by(email=data['email']).first()
+        print(user)
+        if user:
+            raise ValidationError('Email already exists', 'email')
 
     #define these virtual fields on the JSON schema which we dont have on the database schema
-    password = fields.String(required=True)
-    password_confirmation = fields.String(required=True)
-    accounts = fields.Nested('AccountSchema', many=True,
-                             only=('type', 'id', 'nickname'))
+    email = fields.String(
+        required=True,
+        validate=validate.Regexp('^[A-Za-z\d@.$!%*?&]{4,}$', error='Invalid email address')
+        )
+    # this regex should be '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$' in production
+    password = fields.String(
+        required=True,
+        validate=validate.Regexp('^[A-Za-z\d@$!%*?&]{4,}$', error='Does not meet password criteria')
+        )
+    password_confirmation = fields.String(
+        required=True,
+        validate=validate.Regexp('^[A-Za-z\d@$!%*?&]{4,}$', error='Does not meet password criteria')
+        )
+
+    accounts = fields.Nested('AccountSchema', many=True, only=('type', 'id', 'nickname'))
     messages = fields.Nested('MessageSchema', many=True)
 
     class Meta:

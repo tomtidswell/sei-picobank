@@ -3,6 +3,7 @@ section.home-page{
   .hero-lg{
     min-height: 100vh;
     background-image: url('./assets/img/bank.png');
+    background-attachment: fixed;
     background-color: $base-colour;
     background-size: cover;
     background-position: center;
@@ -29,18 +30,17 @@ section.home-page{
         margin: 10px 0;
       }
 
-      .text-base{
-        display: inline-block;
-        background-color: black;
-        color: $base-colour;
-        padding: 3px 8px;
-        box-shadow: -1px -1px $base-colour;
-      }
-
+      
     }
-
+    
   }
-
+  
+  .text-base{
+    display: inline-block;
+    background-color: black;
+    color: $base-colour;
+    padding: 3px 8px;
+  }
   
 
   .step .step-item{
@@ -75,6 +75,17 @@ section.home-page{
     h1{
       font-size: 2.8rem;
       margin: 0;
+    }
+  }
+
+  .ducks{
+    background-image: url('./assets/img/ducks.jpeg');
+
+    background-size: cover;
+    background-position: center;
+
+    h2{
+      text-shadow: 1px 1px 18px $tertiary-colour;
     }
   }
 

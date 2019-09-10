@@ -2,6 +2,7 @@ $base-colour: #ffda14;
 $light-colour: #ffee90;
 $secondary-colour: #14afff;
 $tertiary-colour: #464646;
+$text-colour: #3b4351;
 
 @import "styleHomePage";
 @import "styleBankingPage";
@@ -12,7 +13,7 @@ $tertiary-colour: #464646;
 @import "styleNotFound";
 
 a, a:hover, a:visited, a:active, a:focus{
-  color: #3b4351;
+  color: $text-colour;
   text-decoration: none;
   outline: 0;
   box-shadow: none;
@@ -21,7 +22,7 @@ a, a:hover, a:visited, a:active, a:focus{
 a.btn{
   background-color: #ffda14;
   border: 0;
-  color: #646464;
+  color: $text-colour;
 }
 
 .btn:focus, .btn:hover {
@@ -49,7 +50,7 @@ main{
 button.btn{
   background-color: $base-colour;
   border: 0;
-  color: rgba(100,100,100,1);
+  color: $text-colour;
 }
 
 .btn.btn-link{
@@ -65,6 +66,20 @@ button.btn{
 .is-tertiary{
   background-color: $tertiary-colour;
   color: white;
+}
+
+.toast{
+  position: fixed;
+  top: 0;
+  width: 300px;
+  min-height: 30px;
+  left: calc(50% - 150px);
+  // animation: alternate 1 popup;
+  animation: 4s linear 1s 2 alternate popup;
+  color: $base-colour;
+  border: 0;
+  // box-shadow: 0px 0px 5px #ffda14;
+  z-index: 5;
 }
 
 .empty{
@@ -89,10 +104,28 @@ form.form-horizontal input{
 
 
 footer{
-  background-color: #333;
+  background-color: #fff;
   color: #999;
   border-top: 3px solid #999;
   &{
     padding: 80px 40px 20px 40px;
   }
+}
+
+@keyframes popup { 
+  0% { 
+    top: 100px;
+    transform: scale(0);
+    opacity: 0;
+  } 
+  10% { 
+    top: 100px; 
+    transform: scale(1);
+    opacity: 1;
+  } 
+  100% { 
+    top: 100px; 
+    transform: scale(1);
+    opacity: 1;
+  } 
 }

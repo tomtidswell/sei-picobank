@@ -13,7 +13,6 @@ import LinkAccount from './components/accounts/LinkAccount'
 import SecureMessaging from './components/messaging/SecureMessaging'
 import SupportCentre from './components/support/SupportCentre'
 import Menu from './components/common/Menu'
-import Footer from './components/common/Footer'
 import NotFound from './components/common/NotFound'
 import SecureCustomerRoute from './components/common/SecureCustomerRoute'
 import SecureSupportRoute from './components/common/SecureSupportRoute'
@@ -114,7 +113,6 @@ class App extends Component {
             <Route path="/*" component={NotFound}/>
           </Switch>
         </main>
-        <Footer />
       </BrowserRouter>
     )
   }

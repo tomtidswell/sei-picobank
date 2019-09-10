@@ -25,7 +25,13 @@ class Login extends React.Component {
       .then(res => {
         Auth.setToken(res.data.token)
         // console.log('login response:',res.data)
-        this.props.handleLogin()
+        console.log('is support', Auth.getPayload().support)
+
+        Auth.getPayload().support ?
+          this.props.history.push('/supportcentre') :
+          this.props.history.push('/banking')
+
+        window.scrollTo(0, 0)
       })
       .catch(err => {
         console.log(err)
@@ -34,7 +40,7 @@ class Login extends React.Component {
   }
 
   render() {
-    // console.log('loginprops', this.props)
+    // console.log('login history', this.props.history)
     return (
 
 
@@ -48,7 +54,7 @@ class Login extends React.Component {
           </div>
           <div className="col-9 col-sm-12">
             <input
-              className={`input ${this.state.error ? 'is-danger' : ''}`}
+              className={`form-input ${this.state.error ? 'is-error' : ''}`}
               name="email"
               placeholder=""
               onChange={this.handleChange}
@@ -62,20 +68,20 @@ class Login extends React.Component {
           </div>
           <div className="col-9 col-sm-12">
             <input
-              className={`input ${this.state.error ? 'is-danger' : ''}`}
+              className={`form-input ${this.state.error ? 'is-error' : ''}`}
               type="password"
               name="password"
               placeholder=""
               onChange={this.handleChange}
             />
           </div>
-          {this.state.error && <small className="help is-danger">{this.state.error}</small>}
+          {this.state.error && <small className="help is-error">{this.state.error}</small>}
         </div>
 
         <div className="form-group">
           <div className="col-3 col-sm-12"></div>
           <div className="col-9 col-sm-12">
-            <button type="submit" className="btn is-danger">Login</button>
+            <button type="submit" className="btn is-error">Login</button>
           </div>
         </div>
 
