@@ -49,7 +49,9 @@ class Menu extends React.Component {
     
     //identify if the user has logged in and has a token
     const isSupportMenu = this.state.supportUser
-
+    const { incomingMessages } = this.props
+    console.log('passed props', incomingMessages)
+    
     
     return (
       <Fragment>
@@ -90,10 +92,16 @@ class Menu extends React.Component {
               
               {Auth.isAuthenticated() &&
                 <div className="btn-group">
-
-                  <a className="btn btn-link dropdown-toggle" tabIndex="0">
-                    <i className="icon icon-people"></i>
-                  </a>
+                  {!!incomingMessages.count &&
+                    <a className="btn btn-link dropdown-toggle badge" data-badge={incomingMessages.count} tabIndex="0">
+                      <i className="icon icon-people"></i>
+                    </a>
+                  }
+                  {!incomingMessages.count &&
+                    <a className="btn btn-link dropdown-toggle" tabIndex="0">
+                      <i className="icon icon-people"></i>
+                    </a>
+                  }
                   {!isSupportMenu &&
                   <ul className="menu">
                     <li className="menu-item">
@@ -101,6 +109,15 @@ class Menu extends React.Component {
                       <Link to='/link'><i className="icon icon-copy"></i> &nbsp;Link and view Account settings</Link>
                     </li>
                     <li className="divider"></li>
+                    {!!incomingMessages.count &&
+                      <li className="menu-item">
+                        <Link to='/message' className="active">
+                          <label className="label label-primary">
+                            {incomingMessages.count}
+                          </label> &nbsp;You have {incomingMessages.count > 1 ? 'unread messages' : 'an unread message'}
+                        </Link>
+                      </li>
+                    }
                     <li className="menu-item">
                       <Link to='/message'><i className="icon icon-mail"></i> &nbsp;Send us a secure message</Link>
                     </li>

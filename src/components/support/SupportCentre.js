@@ -159,13 +159,23 @@ class SecureMessaging extends React.Component {
             </div>
           }
 
-          {allMessages.length === 0 &&
+          {userId === null &&
             <div className="empty">
               <div className="empty-icon">
                 <i className="icon icon-people"></i>
               </div>
               <p className="empty-title h5">Choose a customer to begin</p>
               <p className="empty-subtitle">Once you have chosen a customer you will be able to send them a secure message</p>
+            </div>
+          }
+
+          {userId !== null && allMessages.length === 0 && 
+            <div className="empty">
+              <div className="empty-icon">
+                <i className="icon icon-people"></i>
+              </div>
+              <p className="empty-title h5">No messages</p>
+              <p className="empty-subtitle">This customer has not sent any secure messages</p>
             </div>
           }
 

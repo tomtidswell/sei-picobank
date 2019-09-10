@@ -6,6 +6,7 @@ import { subscribeToUserMessages, subscribeToSupportMessages } from './lib/Api'
 import 'spectre.css'
 import '../node_modules/spectre.css/dist/spectre-icons.css'
 import './style.scss'
+import Auth from './lib/Auth'
 
 import Home from './components/common/Home'
 import Banking from './components/accounts/Banking'
@@ -29,7 +30,7 @@ class App extends Component {
       },
       userMessages: {
         messages: [],
-        userCounts: {}
+        count: 0
       }
     }
 
@@ -49,13 +50,16 @@ class App extends Component {
 
     subscribeToSupportMessages(newMessage => {
       const { userMessages } = this.state
-      //add the new message into the state
-      userMessages.messages.push(newMessage)      
-      //add one to the user counter
-      userMessages.userCounts[newMessage.owner_id] ? 
-        userMessages.userCounts[newMessage.owner_id]++ : 
-        userMessages.userCounts[newMessage.owner_id] = 1
-      this.setState({ userMessages })
+
+      //add it if the current user equals the message user
+      if (Auth.getPayload().sub === parseInt(newMessage.owner_id)){
+        console.log('new message arrived')
+        //add the new message into the state
+        userMessages.messages.push(newMessage)      
+        //add one to the user counter
+        userMessages.count++
+        this.setState({ userMessages })
+      }
     })
 
   }
@@ -71,15 +75,9 @@ class App extends Component {
     this.setState({ supportMessages })
   }
 
-  clearUserMessages(userId){
-    const { userMessages } = this.state
-    // console.log('clearing', userId)
-    //delete the user count
-    delete userMessages.userCounts[userId]
-    //remove any messages
-    userMessages.messages = 
-      userMessages.messages.filter(message => parseInt(message.owner_id) !== userId)
-    this.setState({ userMessages })
+  clearUserMessages(){
+    //clear the user count and messages
+    this.setState({ userMessages: { messages: [], count: 0 } })
   }
 
 
@@ -89,7 +87,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <main>
-          <Menu />
+          <Menu incomingMessages={this.state.userMessages} />
           <Switch>
             <SecureSupportRoute exact path="/supportcentre" render={(props) => 
               <SupportCentre {...props} 

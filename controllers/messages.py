@@ -20,7 +20,7 @@ def show(user_id):
         .order_by(Message.created_at) \
         .filter(Message.owner_id == user_id).all()
     if not messages:
-        return jsonify({'message': 'not found'}), 404
+        return jsonify([]), 204
     return message_schema.jsonify(messages, many=True), 200
 
 

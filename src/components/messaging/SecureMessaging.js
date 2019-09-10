@@ -24,7 +24,7 @@ class SecureMessaging extends React.Component {
 
   componentDidMount() {
     // clear the support messages in the props
-    this.props.clearMessages(this.state.userId)
+    this.props.clearMessages()
     // then go fetch the messages
     axios.get(`/api/users/${this.state.userId}/messages`)
       .then(res => {
@@ -41,7 +41,7 @@ class SecureMessaging extends React.Component {
 
   archiveMessage(message){
     // clear the support messages in the props
-    this.props.clearMessages(this.state.userId)
+    this.props.clearMessages()
     // console.log(`archiving ${message}`)
     axios.post(`/api/users/${this.state.userId}/messages/${message}/archive`)
       .then(res => {
@@ -53,7 +53,7 @@ class SecureMessaging extends React.Component {
 
   handleSendMessage(){
     // clear the support messages in the props
-    this.props.clearMessages(this.state.userId)
+    this.props.clearMessages()
     const { newMessageData } = this.state
     axios.post(`/api/users/${this.state.userId}/messages`,{
       ...newMessageData, owner_id: this.state.userId.toString()
@@ -82,15 +82,8 @@ class SecureMessaging extends React.Component {
 
   render() {
     
-    const { allMessages, currentTab, newMessageData, userId } = this.state
-    
-    //as well as destructuring, filter out only those for the current user selected, and add it back in to the master object incomingMessages
+    const { allMessages, currentTab, newMessageData } = this.state
     const { incomingMessages } = this.props
-    incomingMessages.currentUserMessages =
-      incomingMessages.messages.filter(message => {
-        // console.log(parseInt(message.owner_id), parseInt(userId))
-        return parseInt(message.owner_id) === parseInt(userId)
-      })
 
     const messages = allMessages.filter(message => {
       if (currentTab === 'inbox' && !message.archived) return true
@@ -100,7 +93,7 @@ class SecureMessaging extends React.Component {
     // console.log('messages', messages)
     // console.log('tab:', currentTab)
     // console.log('messages state:', this.state)
-    // console.log('incoming in state', incomingMessages)
+    console.log('incoming in state', incomingMessages)
     // console.log('current user:', parseInt(userId))
 
     return (
@@ -139,7 +132,7 @@ class SecureMessaging extends React.Component {
 
 
 
-        {(messages.length > 0 || incomingMessages.currentUserMessages.length > 0) &&
+        {(messages.length > 0 || incomingMessages.messages.length > 0) && currentTab === 'inbox' &&
           <div className="messages">
             {//map throught the data found in the database
               messages.map((msg, index) => (
@@ -157,7 +150,7 @@ class SecureMessaging extends React.Component {
                 </div>
               ))}
             {//add to the bottom by mapping through the currentUserMessages pulled in from the socket
-              incomingMessages.currentUserMessages.map((msg, index) => (
+              incomingMessages.messages.map((msg, index) => (
                 <div className={`card message incoming-message ${msg.incoming ? '' : 'my-message'}`} key={index}>
                   <div className="card-header">
                     <div className="card-title h5">{msg.text}</div>
@@ -170,9 +163,7 @@ class SecureMessaging extends React.Component {
           </div>
         }
 
-        
-
-        {messages.length === 0 &&
+        {messages.length === 0 && incomingMessages.messages.length === 0 &&
           <div className="empty">
             <div className="empty-icon">
               <i className="icon icon-people"></i>

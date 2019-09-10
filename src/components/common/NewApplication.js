@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NewMessageModal = ({modalActive, toggleModal}) => {
+const NewMessageModal = ({ modalActive, toggleModal }) => {
 
   return (
     <div className={`modal ${modalActive ? 'active' : ''}`} id="modal-id">
