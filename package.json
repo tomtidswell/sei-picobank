@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve:front": "webpack-dev-server --mode=development",
     "serve:back": "pipenv run python app.py",
+    "serve": "pipenv run gunicorn --worker-class eventlet -w 1 app:new_app",
     "build": "webpack -p",
     "postinstall": "[ \"$NODE_ENV\" = \"production\" ] && yarn build || exit 0",
     "seed": "pipenv run python seed.py"

@@ -19,6 +19,8 @@ psycopg2-binary = "*"
 pyjwt = "*"
 marshmallow-sqlalchemy = "*"
 flask-socketio = "*"
+gunicorn = "*"
+eventlet = "*"
 
 [requires]
 python_version = "3.7"

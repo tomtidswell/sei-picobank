@@ -76,7 +76,7 @@ def register_sockets(app):
              'result': 'saved in server',
              'message': args
         })
-    return None
+    return None 
 
 
 new_app = create_app()
