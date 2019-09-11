@@ -35,4 +35,21 @@ section.banking-page{
   .chip.add-filter{
     cursor: pointer;
   }
+  .transaction-table{
+    overflow-x: scroll;
+  }
+}
+
+@media only screen and (max-width: 500px){
+  section.banking-page{
+    .hero.bank-head{
+      padding-bottom: 0;
+    }
+    .charts{
+      padding: 10px 0;
+      .chart{
+        width: 90vw;
+      }
+    }
+  }
 }

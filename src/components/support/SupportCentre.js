@@ -10,6 +10,8 @@ import Time from '../../lib/Time'
 class SecureMessaging extends React.Component {
   constructor() {
     super()
+    this.scrollElement = React.createRef()
+    this.inputElement = React.createRef()
 
     this.state = { 
       userId: null, 
@@ -21,29 +23,11 @@ class SecureMessaging extends React.Component {
         userCounts: {}
       } 
     }
-
     this.handleChange = this.handleChange.bind(this)
     this.handleSendMessage = this.handleSendMessage.bind(this)
-
   }
 
   componentDidMount() {
-
-    // socket.on('connect', function (data) {
-    //   console.log('connected to a message server')
-    // })
-    // socket.on('new message', function (data) {
-    //   console.log('new message detected:', data)
-    //   // console.log('the state:', this.state)
-    //   // SecureMessaging.setState({ ...incomingMessages, })
-    //   this.setState({ incomingMessages: 'hello' })
-    // })
-
-
-    // socket.on('successfully saved', function (data) {
-    //   console.log(data)
-    // })
-
     axios.get('/api/users')
       .then(res => {
         // console.log(res.data)
@@ -51,6 +35,10 @@ class SecureMessaging extends React.Component {
         this.setState({ allUsers })
       })
       .catch(err => console.log(err))
+  }
+
+  componentDidUpdate() {
+    this.scrollAndFocus()
   }
 
   switchUser(userId) {
@@ -63,12 +51,13 @@ class SecureMessaging extends React.Component {
       .then(res => {
         const allMessages = res.data ? res.data : []
         // console.log(allMessages)
-        this.setState({ allMessages, userId })
+        this.setState({ allMessages, userId }, ()=>this.scrollAndFocus())
       })
       .catch(err => console.log(err))
   }
 
-  handleSendMessage() {
+  handleSendMessage(e) {
+    e.preventDefault()
     // clear the user messages in the props
     this.props.clearMessages(this.state.userId)
     
@@ -86,6 +75,15 @@ class SecureMessaging extends React.Component {
   handleChange({ target: { value, name } }) {
     const newMessageData = { [name]: value }
     this.setState({ newMessageData })
+  }
+
+  scrollAndFocus() {
+    const eom = this.scrollElement.current
+    const input = this.inputElement.current
+    // this jumps to the bottom of the messages
+    if (eom) eom.scrollIntoView({ block: 'end', behavior: 'smooth' })
+    // this focusses the input
+    if (input) input.focus()
   }
 
 
@@ -137,25 +135,28 @@ class SecureMessaging extends React.Component {
                 allMessages.map((msg, index) => (
                   <div className={`card message ${msg.incoming ? 'my-message' : ''}`} key={index}>
                     <div className="card-header">
-                      <div className="card-title h5">{msg.text}</div>
+                      <div className="card-title">{msg.text}</div>
                       <div className="card-subtitle text-gray">
                         {msg.incoming ? 'Sent' : 'Received'}&nbsp;
                         {Time.timeSince(msg.created_at)}
                       </div>
                     </div>
                   </div>
-                ))}
+                ))
+              }
               {//add to the bottom by mapping through the currentUserMessages pulled in from the socket
                 incomingMessages.currentUserMessages.map((msg, index) => (
                   <div className={`card message incoming-message ${msg.incoming ? 'my-message' : ''}`} key={index}>
                     <div className="card-header">
-                      <div className="card-title h5">{msg.text}</div>
+                      <div className="card-title">{msg.text}</div>
                       <div className="card-subtitle text-gray">
                         {msg.incoming ? 'Sent' : 'Received'} just now
                       </div>
                     </div>
                   </div>
-                ))}
+                ))
+              }
+              {<div id="end-of-messages" ref={this.scrollElement}  ></div>}
             </div>
           }
 
@@ -181,9 +182,9 @@ class SecureMessaging extends React.Component {
 
         </div>
 
-        {userId !== null &&
-          <div className="message-bottom input-group">
-            <span className="input-group-addon addon-lg">
+        {userId !== null && 
+          <form className="message-form input-group" onSubmit={this.handleSendMessage}>
+            <span className="input-group-addon addon-lg  text-label">
               message {allUsers.filter(user => user.id === userId)[0].email}
             </span>
             <input
@@ -192,13 +193,14 @@ class SecureMessaging extends React.Component {
               placeholder="..."
               onChange={this.handleChange}
               value={newMessageData.text}
+              ref={this.inputElement}
+              autoComplete="off"
               name="text" />
             <button
-              className="btn btn-lg btn-primary input-group-btn"
-              onClick={this.handleSendMessage}>
-              Submit
+              className="btn btn-lg btn-primary input-group-btn">
+              Send
             </button>
-          </div>
+          </form> 
         }
 
 

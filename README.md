@@ -38,6 +38,7 @@ I'm very proud of the capability and user experience I managed to pack into this
 Python is a relatively new language for me so most of the challenges I encountered were related to my experience with its differences
 * Seeding a new account with template transactions on the fly using Flask. At first I found the syntax complex, and I ended up with repeated code. This portion still needs refactoring
 * Implementing instant messaging using socket.io - I set this up without guidance after GA, in my next version of the app. It required a complete refactoring of my python code to simplify the application and avoid circular references
+* I had a real difficulty deploying socket.io to Heroku and getting it to work. I realised I needed eventlet and gunicorn to get the server working properly, but I was experiencing seemingly random errors on the front end. I switched from eventlet to gevent and this solved the problem
 
 ## Key Learning
 

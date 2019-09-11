@@ -30,10 +30,8 @@ a.btn{
 }
 
 
-main > section{
-  & > div{
-    padding: 20px 40px 20px 40px;
-  }
+main > section > div{
+  padding: 20px 40px 20px 40px;
 }
 
 section > *:first-child{
@@ -94,6 +92,47 @@ button.btn{
   align-items: center;
 }
 
+.messages{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden scroll;
+  padding: 20px 40px 0px 40px;
+  .message{
+    max-width: 480px;
+    min-width: 150px;
+    border-radius: 5px;
+    margin: 5px 5px;
+    align-self: flex-start;
+    box-shadow: 0 0.25rem 1rem rgba(48,55,66,.15);
+    .card-header{
+      padding: .3rem .5rem;
+    }
+    .card-subtitle{
+      font-size: 0.7em;
+    }
+    &.my-message{
+      align-self: flex-end;
+      text-align: right;
+    }
+    &.incoming-message{
+      background-color: #fdda154f;
+    }
+    .archive{
+      cursor: pointer;
+      color: #888;
+    }
+  }
+}
+
+.message-form{
+  background-color: $base-colour;
+  border-top: .05rem solid #dadee4;
+  height: 80px;
+  padding: 20px 40px 20px 40px;
+}
+
+
 form.form-horizontal input{
   width: 100%;
 }
@@ -113,6 +152,21 @@ footer{
   border-top: 3px solid #999;
   &{
     padding: 80px 40px 20px 40px;
+  }
+}
+
+@media only screen and (max-width: 500px){
+  section > *:first-child{
+    padding-top: 90px;
+  }
+  main > section > div{
+    padding: 20px;
+  }
+  section .messages, section.support-page .messages{
+    padding: 10px;
+  }
+  .message-form .text-label{
+    display: none;
   }
 }
 

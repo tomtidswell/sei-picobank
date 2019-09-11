@@ -42,7 +42,7 @@ class Transactions extends React.Component{
     console.log('account:',accountTransactions)
 
     return (
-      <div>
+      <div className="transaction-table">
 
         <div className="columns">
           <div className="column col-6"><h5>Your account breakdown</h5></div>

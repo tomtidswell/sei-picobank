@@ -30,6 +30,10 @@ section.support-page{
     }
   }
 
+  .messages{
+    padding-left: 230px;
+  }
+
   .empty{
     min-height: 60vh;
     display: flex;
@@ -48,42 +52,6 @@ section.support-page{
     padding-bottom: 5px;
     cursor: pointer;
   }
-
-
-  .messages{
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    margin-left: 220px;
-    .message{
-      width: 380px;
-      min-width: 50vw;
-      border-radius: 5px;
-      margin: 5px 5px;
-      box-shadow: 0 0.25rem 1rem rgba(48,55,66,.15);
-
-      & .card-header{
-        padding: .5rem;
-      }
-
-      &.my-message{
-        align-self: flex-end;
-      }
-
-      &.incoming-message{
-        background-color: #fdda154f;
-      }
-
-    }
-  }
-
-  .message-bottom{
-    background-color: $secondary-colour;
-    border-top: .05rem solid #dadee4;
-  }
-
   
   footer{
     display: none;

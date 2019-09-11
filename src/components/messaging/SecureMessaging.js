@@ -1,14 +1,13 @@
 import React from 'react'
 import axios from 'axios'
 import Time from '../../lib/Time'
-// import { Link } from 'react-router-dom'
-import NewMessageModal from './NewMessageModal'
 import Auth from '../../lib/Auth'
 
 class SecureMessaging extends React.Component {
   constructor() {
     super()
-
+    this.scrollElement = React.createRef()
+    this.inputElement = React.createRef()
     this.state = { 
       userId: Auth.getPayload().sub, 
       currentTab: 'inbox', 
@@ -19,7 +18,7 @@ class SecureMessaging extends React.Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSendMessage = this.handleSendMessage.bind(this)
-    this.toggleModal = this.toggleModal.bind(this)
+
   }
 
   componentDidMount() {
@@ -35,8 +34,12 @@ class SecureMessaging extends React.Component {
       .catch(err => console.log(err))
   }
 
+  componentDidUpdate(){
+    this.scrollAndFocus()
+  }
+
   switchTab(tab){
-    this.setState({ currentTab: tab })
+    this.setState({ currentTab: tab }, ()=>this.scrollAndFocus())
   }
 
   archiveMessage(message){
@@ -51,7 +54,8 @@ class SecureMessaging extends React.Component {
       .catch(err => console.log(err))
   }
 
-  handleSendMessage(){
+  handleSendMessage(e){
+    e.preventDefault()
     // clear the support messages in the props
     this.props.clearMessages()
     const { newMessageData } = this.state
@@ -60,7 +64,7 @@ class SecureMessaging extends React.Component {
     })
       .then(res => {
         const allMessages = res.data ? res.data : []
-        console.log('clearing:', newMessageData)
+        // console.log('clearing:', newMessageData)
         newMessageData.text = ''
         this.setState({ allMessages, newMessageData, modalActive: false })
       })
@@ -69,14 +73,21 @@ class SecureMessaging extends React.Component {
 
   handleChange({ target: { value, name } }){
     const newMessageData = { [name]: value }
-    console.log('message:', newMessageData)
-
+    // console.log('message:', newMessageData)
     this.setState({ newMessageData })
   }
 
-  toggleModal(){
-    this.setState({ modalActive: !this.state.modalActive })
+  scrollAndFocus() {
+    const eom = this.scrollElement.current
+    const input = this.inputElement.current
+
+    // this jumps to the bottom of the messages
+    if (eom) eom.scrollIntoView({ block: 'end', behavior: 'smooth' })
+
+    // this focusses the input
+    if (input) input.focus()
   }
+
 
 
 
@@ -84,6 +95,7 @@ class SecureMessaging extends React.Component {
     
     const { allMessages, currentTab, newMessageData } = this.state
     const { incomingMessages } = this.props
+    
 
     const messages = allMessages.filter(message => {
       if (currentTab === 'inbox' && !message.archived) return true
@@ -93,8 +105,8 @@ class SecureMessaging extends React.Component {
     // console.log('messages', messages)
     // console.log('tab:', currentTab)
     // console.log('messages state:', this.state)
-    console.log('incoming in state', incomingMessages)
-    // console.log('current user:', parseInt(userId))
+    // console.log('incoming in state', incomingMessages)
+    // console.log('current user:')
 
     return (
       <section className="message-page">
@@ -116,29 +128,13 @@ class SecureMessaging extends React.Component {
         </ul>
 
 
-        <figure
-          className="avatar avatar-xl new-message tooltip tooltip-left"
-          onClick={()=>this.toggleModal()}
-          data-tooltip="Send us a new message">+
-        </figure>
-
-        <NewMessageModal
-          handleSendMessage={this.handleSendMessage}
-          handleChange={this.handleChange}
-          newMessageData={newMessageData}
-          modalActive={this.state.modalActive}
-          toggleModal={this.toggleModal}
-        />
-
-
-
         {(messages.length > 0 || incomingMessages.messages.length > 0) && currentTab === 'inbox' &&
           <div className="messages">
             {//map throught the data found in the database
               messages.map((msg, index) => (
                 <div className={`card message ${msg.incoming ? '' : 'my-message'}`} key={index}>
                   <div className="card-header">
-                    <div className="card-title h5">{msg.text}</div>
+                    <div className="card-title">{msg.text}</div>
                     <div className="card-subtitle text-gray">
                       <a className="archive" onClick={()=>this.archiveMessage(msg.id)}>
                         {currentTab === 'archive' ? 'Send to inbox' : 'Archive' }
@@ -148,20 +144,25 @@ class SecureMessaging extends React.Component {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+            }
             {//add to the bottom by mapping through the currentUserMessages pulled in from the socket
               incomingMessages.messages.map((msg, index) => (
                 <div className={`card message incoming-message ${msg.incoming ? '' : 'my-message'}`} key={index}>
                   <div className="card-header">
-                    <div className="card-title h5">{msg.text}</div>
+                    <div className="card-title">{msg.text}</div>
                     <div className="card-subtitle text-gray">
                       {msg.incoming ? 'Received' : 'Sent'} just now
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+            }
+            {<div id="end-of-messages" ref={this.scrollElement} ></div>}
           </div>
         }
+
+        {/* {document.getElementById('end-of-messages').scrollIntoView()} */}
 
         {messages.length === 0 && incomingMessages.messages.length === 0 &&
           <div className="empty">
@@ -176,6 +177,28 @@ class SecureMessaging extends React.Component {
           </div>
         }
 
+        {currentTab === 'inbox' &&
+          <form className="message-form input-group" onSubmit={this.handleSendMessage}>
+            <span className="input-group-addon addon-lg text-label">
+              Send a secure message
+            </span>
+            <input
+              type="text"
+              className="form-input input-lg"
+              placeholder="..."
+              onChange={this.handleChange}
+              value={newMessageData.text}
+              ref={this.inputElement}
+              autoComplete="off"
+              name="text" />
+            <button
+              type="submit"
+              className="btn btn-lg btn-primary input-group-btn">
+              Send
+            </button>
+          </form>  
+        }
+        
       </section>
     )
   }
