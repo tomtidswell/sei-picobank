@@ -44,6 +44,7 @@ def register_blueprints(app):
     @app.route('/', defaults={'path': ''})  # homepage
     @app.route('/<path:path>')  # any other path
     def catch_all(path):
+        print('Request path: ', path)
         if os.path.isfile('dist/' + path):  # if path is a file, send it back
             return app.send_static_file(path)
         # otherwise send back the index.html file
@@ -71,7 +72,6 @@ def register_sockets(app):
     @socketio.on('incoming message', namespace='')
     def test_msg_in(args):
         print('we just got a message', args)
-        # TODO: save the message
         emit('successfully saved', {
              'result': 'saved in server',
              'message': args

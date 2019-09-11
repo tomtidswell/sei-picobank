@@ -50,7 +50,7 @@ class Menu extends React.Component {
     //identify if the user has logged in and has a token
     const isSupportMenu = this.state.supportUser
     const { incomingMessages } = this.props
-    console.log('passed props', incomingMessages)
+    // console.log('passed props', incomingMessages)
     
     
     return (

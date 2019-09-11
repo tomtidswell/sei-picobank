@@ -25,7 +25,7 @@ class Login extends React.Component {
       .then(res => {
         Auth.setToken(res.data.token)
         // console.log('login response:',res.data)
-        console.log('is support', Auth.getPayload().support)
+        // console.log('is support', Auth.getPayload().support)
 
         Auth.getPayload().support ?
           this.props.history.push('/supportcentre') :
