@@ -18,20 +18,31 @@ section.support-page{
     & > *{
       padding: 10px;
     }
+  }
+  .menu{
+    align-self: flex-start;
+    z-index: inherit;
+    position: absolute;
+    top: 75px;
+    left: -190px;
+    width: 200px;
+    margin: 15px;
+    transition: left 1s;
+  }
 
+  .menu:hover, .menu:active{
+    left: 0;
+  }
+
+  &.empty-section{
     .menu{
-      align-self: flex-start;
-      z-index: inherit;
-      position: absolute;
-      top: 0;
       left: 0;
-      width: 200px;
-      margin: 15px;
+
     }
   }
 
-  .messages{
-    padding-left: 230px;
+  .message-form{
+    background-color: $secondary-colour;
   }
 
   .empty{
@@ -55,5 +66,13 @@ section.support-page{
   
   footer{
     display: none;
+  }
+}
+
+@media only screen and (max-width: 500px){
+  section.support-page{
+    .menu{
+      top: 44px;
+    }
   }
 }

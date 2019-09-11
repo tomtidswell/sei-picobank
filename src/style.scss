@@ -34,8 +34,8 @@ main > section > div{
   padding: 20px 40px 20px 40px;
 }
 
-section > *:first-child{
-  padding-top: 140px;
+section{
+  padding-top: 72px;
 }
 
 main{
@@ -97,7 +97,7 @@ button.btn{
   flex-direction: column;
   flex-grow: 1;
   overflow: hidden scroll;
-  padding: 20px 40px 0px 40px;
+  padding: 20px;
   .message{
     max-width: 480px;
     min-width: 150px;
@@ -156,10 +156,15 @@ footer{
 }
 
 @media only screen and (max-width: 500px){
-  section > *:first-child{
-    padding-top: 90px;
+  header{
+    h1.title{
+      font-size: 1rem;
+    }
   }
-  main > section > div{
+  section{
+    padding-top: 44px;
+  }
+  section > div{
     padding: 20px;
   }
   section .messages, section.support-page .messages{

@@ -128,7 +128,7 @@ class SecureMessaging extends React.Component {
         </ul>
 
 
-        {(messages.length > 0 || incomingMessages.messages.length > 0) && currentTab === 'inbox' &&
+        {(messages.length > 0 || incomingMessages.messages.length > 0) &&
           <div className="messages">
             {//map throught the data found in the database
               messages.map((msg, index) => (

@@ -105,82 +105,80 @@ class SecureMessaging extends React.Component {
     // console.log('incoming in state', incomingMessages)
 
     return (
-      <section className="support-page">
+      <section className={`support-page ${userId === null || allMessages.length === 0 ? 'empty-section' : ''}`}>
 
-        <div className="message-body">
-          <ul className="menu">
-            <li className="divider" data-content="Customers"></li>
-            {allUsers.length > 0 &&
-              allUsers.map((user, index) => (
-                <li
-                  key={index}
-                  onClick={() => this.switchUser(user.id)}
-                  className="menu-item">
-                  <a className={user.id === userId ? 'active' : ''}>{user.email}</a>
-                  <div className="menu-badge">
-                    {incomingMessages.userCounts[user.id] &&
-                      <label className="label label-primary">
-                        {incomingMessages.userCounts[user.id]}
-                      </label>
-                    }
+        <ul className="menu">
+          <li className="divider" data-content="Customers"></li>
+          {allUsers.length > 0 &&
+            allUsers.map((user, index) => (
+              <li
+                key={index}
+                onClick={() => this.switchUser(user.id)}
+                className="menu-item">
+                <a className={user.id === userId ? 'active' : ''}>{user.email}</a>
+                <div className="menu-badge">
+                  {incomingMessages.userCounts[user.id] &&
+                    <label className="label label-primary">
+                      {incomingMessages.userCounts[user.id]}
+                    </label>
+                  }
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        {allMessages.length > 0 &&
+          <div className="messages">
+            {//map throught the data found in the database
+              allMessages.map((msg, index) => (
+                <div className={`card message ${msg.incoming ? 'my-message' : ''}`} key={index}>
+                  <div className="card-header">
+                    <div className="card-title">{msg.text}</div>
+                    <div className="card-subtitle text-gray">
+                      {msg.incoming ? 'Sent' : 'Received'}&nbsp;
+                      {Time.timeSince(msg.created_at)}
+                    </div>
                   </div>
-                </li>
+                </div>
               ))
             }
-          </ul>
-
-          {allMessages.length > 0 &&
-            <div className="messages">
-              {//map throught the data found in the database
-                allMessages.map((msg, index) => (
-                  <div className={`card message ${msg.incoming ? 'my-message' : ''}`} key={index}>
-                    <div className="card-header">
-                      <div className="card-title">{msg.text}</div>
-                      <div className="card-subtitle text-gray">
-                        {msg.incoming ? 'Sent' : 'Received'}&nbsp;
-                        {Time.timeSince(msg.created_at)}
-                      </div>
+            {//add to the bottom by mapping through the currentUserMessages pulled in from the socket
+              incomingMessages.currentUserMessages.map((msg, index) => (
+                <div className={`card message incoming-message ${msg.incoming ? 'my-message' : ''}`} key={index}>
+                  <div className="card-header">
+                    <div className="card-title">{msg.text}</div>
+                    <div className="card-subtitle text-gray">
+                      {msg.incoming ? 'Sent' : 'Received'} just now
                     </div>
                   </div>
-                ))
-              }
-              {//add to the bottom by mapping through the currentUserMessages pulled in from the socket
-                incomingMessages.currentUserMessages.map((msg, index) => (
-                  <div className={`card message incoming-message ${msg.incoming ? 'my-message' : ''}`} key={index}>
-                    <div className="card-header">
-                      <div className="card-title">{msg.text}</div>
-                      <div className="card-subtitle text-gray">
-                        {msg.incoming ? 'Sent' : 'Received'} just now
-                      </div>
-                    </div>
-                  </div>
-                ))
-              }
-              {<div id="end-of-messages" ref={this.scrollElement}  ></div>}
-            </div>
-          }
+                </div>
+              ))
+            }
+            {<div id="end-of-messages" ref={this.scrollElement}  ></div>}
+          </div>
+        }
 
-          {userId === null &&
-            <div className="empty">
-              <div className="empty-icon">
-                <i className="icon icon-people"></i>
-              </div>
-              <p className="empty-title h5">Choose a customer to begin</p>
-              <p className="empty-subtitle">Once you have chosen a customer you will be able to send them a secure message</p>
+        {userId === null &&
+          <div className="empty">
+            <div className="empty-icon">
+              <i className="icon icon-people"></i>
             </div>
-          }
+            <p className="empty-title h5">Choose a customer to begin</p>
+            <p className="empty-subtitle">Once you have chosen a customer you will be able to send them a secure message</p>
+          </div>
+        }
 
-          {userId !== null && allMessages.length === 0 && 
-            <div className="empty">
-              <div className="empty-icon">
-                <i className="icon icon-people"></i>
-              </div>
-              <p className="empty-title h5">No messages</p>
-              <p className="empty-subtitle">This customer has not sent any secure messages</p>
+        {userId !== null && allMessages.length === 0 && 
+          <div className="empty">
+            <div className="empty-icon">
+              <i className="icon icon-people"></i>
             </div>
-          }
+            <p className="empty-title h5">No messages</p>
+            <p className="empty-subtitle">This customer has not sent any secure messages</p>
+          </div>
+        }
 
-        </div>
 
         {userId !== null && 
           <form className="message-form input-group" onSubmit={this.handleSendMessage}>
