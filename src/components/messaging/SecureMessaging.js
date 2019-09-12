@@ -110,7 +110,7 @@ class SecureMessaging extends React.Component {
 
     return (
       <section className="message-page">
-        <div className="hero message-head">
+        <div className="hero hero-sm hero-head">
           <h1 className="title">your secure messages</h1>
         </div>
 

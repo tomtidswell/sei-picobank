@@ -139,7 +139,7 @@ class Menu extends React.Component {
             </div>
 
             {!Auth.isAuthenticated() &&
-              <a href='#register-login' className="nav-link">Register or Log in</a>
+              <a href='#register-login' className="nav-link">Register | Log in</a>
             }
           </article>
 

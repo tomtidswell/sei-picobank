@@ -2,8 +2,6 @@ section.support-page{
 
   height: 100vh;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
 
   .message-body{
     position: relative;
@@ -37,20 +35,11 @@ section.support-page{
   &.empty-section{
     .menu{
       left: 0;
-
     }
   }
 
   .message-form{
     background-color: $secondary-colour;
-  }
-
-  .empty{
-    min-height: 60vh;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    flex-grow: 1;
   }
 
   .new-message{

@@ -27,9 +27,13 @@ class Home extends React.Component {
     return (
       <Fragment> 
         <section className="home-page">
-          <div className="hero hero-lg">
+
+          <div className="hero hero-lg home-head">
             <div className="titles">
-              <h2><span className="text-base">We&apos;re different</span></h2>
+              <h2>
+                <span className="text-base">We&apos;re</span>
+                <span className="text-base">different</span>
+              </h2>
               <p><span className="text-base">Understand your money and how you spend</span></p>
               <p><span className="text-base">Stay in control of your finances</span></p>
               <p><span className="text-base">We&apos;re here to help, message us any time</span></p>

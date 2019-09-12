@@ -83,7 +83,7 @@ class LinkAccount extends React.Component {
 
     return (
       <section className="link-page">
-        <div className="hero link-head">
+        <div className="hero hero-sm hero-head">
           <h1 className="title">set up your p&#305;coBank accounts</h1>
         </div>
 

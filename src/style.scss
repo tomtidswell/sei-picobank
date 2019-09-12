@@ -19,8 +19,8 @@ a, a:hover, a:visited, a:active, a:focus{
   box-shadow: none;
 }
 
-a.btn{
-  background-color: #ffda14;
+a.btn, button.btn{
+  background-color: $base-colour;
   border: 0;
   color: $text-colour;
 }
@@ -29,31 +29,25 @@ a.btn{
     background: $light-colour;
 }
 
+.btn.btn-link{
+  color: black;
+}
+
 
 main > section > div{
   padding: 20px 40px 20px 40px;
 }
 
-section{
-  padding-top: 72px;
-}
-
 main{
   min-height: 100vh;
-  section{
-    height: 100%;
-  }
+}
+section{
+  padding-top: 72px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-button.btn{
-  background-color: $base-colour;
-  border: 0;
-  color: $text-colour;
-}
-
-.btn.btn-link{
-  color: black;
-}
 
 .is-base{
   background-color: $base-colour;
@@ -66,13 +60,34 @@ button.btn{
   color: white;
 }
 
+.hero.hero-head{
+  background-color: $base-colour;
+  h1{
+    margin: 0;
+    padding: 0;
+  }
+}
+.hero-lg{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.tab-block{
+  background-color: $base-colour;
+  margin-top: 0;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
 .toast{
   position: fixed;
   top: 0;
   width: 300px;
   min-height: 30px;
   left: calc(50% - 150px);
-  // animation: alternate 1 popup;
   animation: 4s linear 1s 2 alternate popup;
   color: $base-colour;
   border: 0;
@@ -85,7 +100,7 @@ button.btn{
 }
 
 .empty{
-  min-height: 50vh;
+  flex-grow: 1;
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -137,9 +152,6 @@ form.form-horizontal input{
   width: 100%;
 }
 
-.tab-block{
-  cursor: pointer;
-}
 
 .is-right{
   text-align: right;
@@ -169,6 +181,10 @@ footer{
   }
   section .messages, section.support-page .messages{
     padding: 10px;
+  }
+  section.home-page .home-head{
+    padding: 20px 5px;
+
   }
   .message-form .text-label{
     display: none;

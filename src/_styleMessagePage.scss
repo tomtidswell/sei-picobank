@@ -1,27 +1,6 @@
 section.message-page{
   height: 100vh;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-
-
-  .hero.message-head{
-    background-color: $base-colour;
-    padding-bottom: 0;
-  }
-  ul.tab-block{
-    background-color: $base-colour;
-    margin-top: 0;
-    margin-bottom: 0;
-    height: 41px;
-  }
-
-  .empty{
-    flex-grow: 1;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-  }
 
   .new-message{
     position: fixed;
