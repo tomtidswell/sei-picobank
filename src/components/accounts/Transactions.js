@@ -37,15 +37,14 @@ class Transactions extends React.Component{
         return trans.categories.some(cat => filters.some(filter => filter.category === cat.category))
       })
 
-    console.log('user:',userData.email)
-    console.log('current tab:',currentTab)
-    console.log('account:',accountTransactions)
+    // console.log('user:',userData.email)
+    // console.log('current tab:',currentTab)
+    // console.log('account:',accountTransactions)
 
     return (
       <div className="transaction-table">
 
         <div className="columns">
-          <div className="column col-6"><h5>Your account breakdown</h5></div>
           <div className="column col-6 is-right">
             {this.state.filters.length > 0 ? 'Filter: ' : ''}
             {this.state.filters.map((filter, index) => (
@@ -64,27 +63,23 @@ class Transactions extends React.Component{
         <table className="table table-hover">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Description</th>
-              <th className="currency">In</th>
-              <th className="currency">Out</th>
-              <th className="currency">Balance</th>
-              <th className="is-right">Tags</th>
+              <th className="not-mobile">Date</th>
+              <th className="not-mobile">Description</th>
+              <th className="only-mobile">Item</th>
+              <th className="">Tags</th>
+              <th className="currency not-mobile">In</th>
+              <th className="currency not-mobile">Out</th>
+              <th className="currency not-mobile">Balance</th>
+              <th className="currency only-mobile">Value</th>
             </tr>
           </thead>
           <tbody>
             {filteredTrans.map((transaction, index) => (
               <tr key={index}>
-                <td>{transaction.date}</td>
-                <td>{transaction.description}</td>
-                <td className="text-right">
-                  {transaction.amount >= 0 ? `£${transaction.amount.toFixed(2)}` : ''}
-                </td>
-                <td className="text-right">
-                  {transaction.amount < 0 ? `£${Math.abs(transaction.amount).toFixed(2)}` : ''}
-                </td>
-                <td className="text-right">£{transaction.balance.toFixed(2)}</td>
-                <td className="is-right">
+                <td className="not-mobile">{transaction.date}</td>
+                <td className="not-mobile">{transaction.description}</td>
+                <td className="only-mobile">{transaction.date}<br />{transaction.description}</td>
+                <td className="">
                   {transaction.categories.map((category, index) => (
                     <span
                       style={{backgroundColor: category.colour}}
@@ -95,6 +90,16 @@ class Transactions extends React.Component{
                     </span>
 
                   ))}
+                </td>
+                <td className="text-right not-mobile">
+                  {transaction.amount >= 0 ? `£${transaction.amount.toFixed(2)}` : ''}
+                </td>
+                <td className="text-right not-mobile">
+                  {transaction.amount < 0 ? `£${Math.abs(transaction.amount).toFixed(2)}` : ''}
+                </td>
+                <td className="text-right not-mobile">£{transaction.balance.toFixed(2)}</td>
+                <td className="text-right only-mobile">
+                  {`${transaction.amount < 0 ? '-' : ''}£${Math.abs(transaction.amount).toFixed(2)}`}
                 </td>
               </tr>
             ))}

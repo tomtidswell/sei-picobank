@@ -14,14 +14,22 @@ class Banking extends React.Component {
   constructor() {
     super()
 
-    this.state = { userId: Auth.getPayload().sub, currentTab: 0, accountTransactions: [] }
+    this.state = { 
+      userId: Auth.getPayload().sub, 
+      currentTab: 0, 
+      accountTransactions: [],
+      selectedDate: {
+        month: new Date(Date.now()).getMonth(),
+        year: new Date(Date.now()).getFullYear()
+      }
+    }
   }
 
   componentDidMount() {
     let userData = null
 
     //if we realise that we're not logged in, redirect to the home page
-    if(!Auth.getToken()) this.props.history.push('/')
+    if (!Auth.getToken()) this.props.history.push('/')
 
     axios.get(`/api/users/${this.state.userId}`,{
       headers: { Authorization: `Bearer ${Auth.getToken()}` }
@@ -29,14 +37,14 @@ class Banking extends React.Component {
       .then(res => {
         userData = res.data
         //now we know we do have therefore we do have some accounts, so get the data for the first account
-        if(userData.accounts.length > 0)
+        if (userData.accounts.length > 0)
           return axios.get(`/api/accounts/${userData.accounts[0].id}/transactions`, {
             headers: { Authorization: `Bearer ${Auth.getToken()}` }
           })
       })
       .then(res => {
         //if we have user data but no accounts, push to the link page, where we will detect this state and show a message that for first time users without an account, the accounts need to be linked
-        if(userData.accounts.length === 0){
+        if (userData.accounts.length === 0){
           this.redirectToLink()
           return
         }
@@ -60,15 +68,15 @@ class Banking extends React.Component {
     //reduce the categories into an object to grab unique values
     return transactions.reduce((acc, trans) => {
       // filter by either credits or debits
-      if(type === 'debits' && trans.amount > 0) return acc
-      if(type === 'credits' && trans.amount < 0) return acc
+      if (type === 'debits' && trans.amount > 0) return acc
+      if (type === 'credits' && trans.amount < 0) return acc
 
       //make sure we include all categories
-      trans.categories.forEach(({category}) => {
+      trans.categories.forEach(({ category }) => {
         // either create the key or add to it
         category in acc ? acc[category] += trans.amount : acc[category] = trans.amount
         // get rid of those pesky floating point maths errors by rounding its multiple of 100, then dividing
-        acc[category] = Math.round(acc[category]*100)/100
+        acc[category] = Math.round(acc[category] * 100) / 100
       })
       return acc
     },{})
@@ -77,7 +85,7 @@ class Banking extends React.Component {
   categoryColourSettings(transactions){
     //reduce the categories into an object to grab unique values for colours
     return transactions.reduce((acc, trans) => {
-      trans.categories.forEach(({category, colour}) => {
+      trans.categories.forEach(({ category, colour }) => {
         acc[category] = colour
       })
       return acc
@@ -87,24 +95,65 @@ class Banking extends React.Component {
   addRunningBalance(transactions){
     //inserts a running balance into each object
     return transactions.map((transaction, index) => {
-      transaction.balance = index === 0
-        ? transaction.amount
-        : transactions[index-1].balance + transaction.amount
+      transaction.balance = index === 0 ? 
+        transaction.amount :
+        transactions[index - 1].balance + transaction.amount
       return transaction
     })
   }
 
-  extractThisMonth(transactions){
-    const thisMonth = new Date(Date.now()).getMonth()
+  extractMonth(transactions){
+    const { selectedDate } = this.state
     //filter out everything except this months data
-    transactions = transactions.filter(trans => new Date(trans.formalDate).getMonth() === thisMonth)
+    const thisMonth = transactions.filter(trans => 
+      new Date(trans.formalDate).getMonth() === selectedDate.month && 
+      new Date(trans.formalDate).getFullYear() === selectedDate.year
+    )
+
+    //identify what the next and previous months should be
+    const prev = this.removeMonth(selectedDate)
+    const next = this.addMonth(selectedDate)    
+
+    //return an object including whether the next/previous months can be navigated to, and also a reduction for the incoming and outgoings
     return {
-      transactions,
-      //push the outgoing transaction total
-      outgoingTotal: transactions.reduce((acc,trans) => trans.amount < 0 ? acc += Math.abs(trans.amount) : acc,0),
-      //push the incoming transaction total
-      incomingTotal: transactions.reduce((acc,trans) => trans.amount > 0 ? acc += Math.abs(trans.amount) : acc ,0)
+      transactions: thisMonth,
+      outgoingTotal: thisMonth.reduce((acc, trans) => trans.amount < 0 ? acc += Math.abs(trans.amount) : acc, 0).toFixed(2),
+      incomingTotal: thisMonth.reduce((acc, trans) => trans.amount > 0 ? acc += Math.abs(trans.amount) : acc, 0).toFixed(2),
+      prev,
+      next,
+      prevOk: transactions.some(trans =>
+        new Date(trans.formalDate).getMonth() === prev.month &&
+        new Date(trans.formalDate).getFullYear() === prev.year
+      ),
+      nextOk: transactions.some(trans =>
+        new Date(trans.formalDate).getMonth() === next.month &&
+        new Date(trans.formalDate).getFullYear() === next.year
+      )
     }
+  }
+
+  removeMonth(date){
+    return {
+      month: date.month === 0 ? 11 : date.month - 1,
+      year: date.month === 0 ? date.year - 1 : date.year
+    }
+  }
+
+  addMonth(date){
+    return {
+      month: date.month === 11 ? 0 : date.month + 1,
+      year: date.month === 11 ? date.year + 1 : date.year 
+    }
+  }
+
+  prevMonth(){
+    const selectedDate = this.removeMonth(this.state.selectedDate)
+    this.setState({ selectedDate })
+  }
+
+  nextMonth(){
+    const selectedDate = this.addMonth(this.state.selectedDate)
+    this.setState({ selectedDate })
   }
 
   redirectToLink(){
@@ -115,24 +164,22 @@ class Banking extends React.Component {
 
   render() {
     //return null the first time we render without user data
-    if(!this.state.userData)
+    if (!this.state.userData)
       return null
 
     // pull out the data from state
-    const {userData} = this.state
-    let {accountTransactions} = this.state
+    const { userData } = this.state
 
-
-    // console.log('user:', userData)
-    console.log('account:', accountTransactions)
-
-    accountTransactions = this.addRunningBalance(accountTransactions)
+    const accountTransactions = this.addRunningBalance(this.state.accountTransactions)
     const outgoingAggCat = this.aggregateCategoriesAndSpend(this.state.accountTransactions, 'debits')
     const incomingAggCat = this.aggregateCategoriesAndSpend(this.state.accountTransactions, 'credits')
     const catColours = this.categoryColourSettings(accountTransactions)
-    const thisMonthData = this.extractThisMonth(accountTransactions)
+    const thisMonthData = this.extractMonth(accountTransactions)
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-    console.log('this month:', thisMonthData)
+    // console.log('user:', userData)
+    // console.log('account:', accountTransactions)
+    // console.log('this month:', thisMonthData)
 
 
     return (
@@ -163,7 +210,7 @@ class Banking extends React.Component {
               <div className="card-header">
                 <div className="card-title h5">Spending by category</div>
                 <div className="card-subtitle text-gray">
-                  Your transactions are grouped into the tags shown below
+                  All your spending. All items are grouped into categories. Click the categories to filter.
                 </div>
               </div>
             </div>
@@ -175,7 +222,7 @@ class Banking extends React.Component {
               <div className="card-header">
                 <div className="card-title h5">Income by category</div>
                 <div className="card-subtitle text-gray">
-                  Your transactions are grouped into the tags shown below
+                  All money coming in. All items are grouped into categories. Click the categories to filter.
                 </div>
               </div>
             </div>
@@ -187,7 +234,12 @@ class Banking extends React.Component {
               <div className="card-header">
                 <div className="card-title h5">Account balance</div>
                 <div className="card-subtitle text-gray">
-                  Your transactions are grouped into the tags shown below
+                  <p>Your bank account balance changing over time.</p>
+                  <p>
+                    Your current balance is: £
+                    {accountTransactions[accountTransactions.length - 1] &&
+                    accountTransactions[accountTransactions.length - 1].balance.toFixed(2) }
+                  </p>
                 </div>
               </div>
             </div>
@@ -196,17 +248,32 @@ class Banking extends React.Component {
               <div className="card-image small-chart">
                 <ThisMonth data={thisMonthData}/>
               </div>
+              {thisMonthData.prevOk &&
+                <figure 
+                  className="avatar avatar-xs prev-month tooltip"
+                  data-tooltip={months[thisMonthData.prev.month]}
+                  onClick={()=>this.prevMonth()}
+                  data-initial="<">
+                </figure>
+              }
+              {thisMonthData.nextOk &&
+                <figure 
+                  className="avatar avatar-xs next-month tooltip"
+                  data-tooltip={months[thisMonthData.next.month]}
+                  onClick={()=>this.nextMonth()}
+                  data-initial=">">
+                </figure>
+              }
+
               <div className="card-header">
-                <div className="card-title h5">This month so far</div>
+                <div className="card-title h5">
+                  {months[this.state.selectedDate.month]} 
+                  {this.state.selectedDate.month === new Date(Date.now()).getMonth() ? ' so far' : ''} 
+                </div>
 
                 <div className="card-subtitle text-gray">
-                  <p>Your current balance is: £
-                    {thisMonthData.transactions.length &&
-                      thisMonthData.transactions[thisMonthData.transactions.length - 1].balance.toFixed(2)
-                    }
-                  </p>
-                  <p>Your total outgoings are: £</p>
-                  <p>Your total incomings are: £</p>
+                  <p>Your total outgoings are: £{thisMonthData.outgoingTotal}</p>
+                  <p>Your total incomings are: £{thisMonthData.incomingTotal}</p>
                   <p>Largest expense:&nbsp;
                     {thisMonthData.transactions.reduce((acc, trans )=> trans.amount < acc.amount ? trans : acc,{ amount: 0 }).description}
                   </p>
@@ -218,6 +285,7 @@ class Banking extends React.Component {
           </div>
         }
 
+        {/* <div className=""><h5>Your account breakdown</h5></div> */}
         {accountTransactions.length > 0 &&
           <Transactions userData={userData} accountTransactions={accountTransactions}/>
         }

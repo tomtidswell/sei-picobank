@@ -5,6 +5,10 @@ section.banking-page{
     text-align: center;
   }
 
+  .only-mobile{
+    display: none;
+  }
+
   .charts{
     display: flex;
     flex-wrap: wrap;
@@ -13,15 +17,34 @@ section.banking-page{
       margin: 0;
     }
     .chart{
+      position: relative;
       width: 380px;
       padding: 5px;
       border-radius: 5px;
       margin: 5px 5px;
       box-shadow: 0 0.25rem 1rem rgba(48,55,66,.15);
+      justify-content: center;
+      .card-header{
+        padding: 0.5rem;
+      }
     }
     .small-chart{
       margin-top: 20px;
       height:130px;
+    }
+    .prev-month{
+      position: absolute;
+      top: 50%;
+      left: -8px;
+      background-color: $tertiary-colour;
+      border: 3px solid $base-colour;
+    }
+    .next-month{
+      position: absolute;
+      top: 50%;
+      right: -8px;
+      background-color: $tertiary-colour;
+      border: 3px solid $base-colour;
     }
   }
   .chip.add-filter{
@@ -42,6 +65,16 @@ section.banking-page{
       .chart{
         width: 90vw;
       }
+    }
+    .transaction-table{
+      padding: 0;
+      font-size: 0.6rem;
+    }
+    .not-mobile{
+      display: none;
+    }
+    .only-mobile{
+      display: table-cell;
     }
   }
 }

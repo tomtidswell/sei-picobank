@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { HorizontalBar } from 'react-chartjs-2'
 
 const data = {
@@ -39,11 +39,13 @@ const options = {
 class ThisMonth extends Component {
   render() {
 
-    if(!this.props.data) return null
-
+    if (!this.props.data) return null
+    
+    // empty the data for when the chart is being redrawn
+    data.datasets[0].data = []
     data.datasets[0].data.push(this.props.data.outgoingTotal)
     data.datasets[0].data.push(this.props.data.incomingTotal)
-
+    
     var ref = 'chart'
     return (
       <HorizontalBar ref={ref} data={data} options={options}/>

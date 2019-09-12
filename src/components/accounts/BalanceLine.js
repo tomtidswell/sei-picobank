@@ -29,17 +29,25 @@ const data = {
 }
 //
 const options = {
+  legend: {
+    display: false
+  },
   scales: {
     xAxes: [{
+      gridLines: {
+        display: false
+      },
       type: 'time',
       time: {
         unit: 'day',
+        stepSize: 14,
         tooltipFormat: 'ddd DD MMM'
       }
     }],
     yAxes: [{
       ticks: {
-        suggestedMin: 0
+        stepSize: 1000,
+        fontColor: '#ccc'
       }
     }]
   }
