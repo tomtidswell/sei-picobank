@@ -10,6 +10,10 @@ Format: Solo
 
 Duration: 1 week
 
+Deployment: 
+* v1 - [on Heroku](https://picobank-app.herokuapp.com)
+* v2 (in progress) - [current build on Heroku](https://picobank.herokuapp.com)
+
 ## Built With
 
 * **Front-end**
@@ -100,7 +104,7 @@ The account analysis is achieved by computing different metrics from the raw acc
 
 <img src="readme/screens/analysis3.png" width="300" alt="Balance over time">
 
-* This month summary with largest expense
+* Month summary with largest expense
 
 <img src="readme/screens/analysis4.png" width="300" alt="This month">
 
@@ -246,16 +250,28 @@ It's now ready to access on the [localhost](https://localhost:8000).
 
 ## Versioning
 
-#### v1
-One week project, ended with a demo and presentation. MVP was complete, but support accounts were not yet enabled, so two way chat was not possible.
+#### v1 - [on Heroku](https://picobank-app.herokuapp.com)
+One week project, ended with a demo and presentation. MVP was complete, but support accounts were not yet enabled, so two way chat was not possible. Functionality includes:
+* Transactions with categories
+* User registration and login
+* Messaging, but one way only
+* Account linking
 
-#### v2
-_...work in progress_
-
+#### v2 (in progress) - [current build on Heroku](https://picobank.herokuapp.com)
+* Secure routing
+* Support accounts
+* Two way instant messaging with websockets support
+* Message waiting notifications
+* Improved analysis cards - monthly summaries
+* Revised styling
+* Mobile responsiveness
+* Visual validation errors for login and registration 
+* _...work in progress_
 
 
 ## Acknowledgments
 
 * I was inspired by the new challenger type banks including Monzo and Revolut
 * When integrating socket.io I found referencing [CookieCutter Flask](https://github.com/cookiecutter-flask) to be extremely useful for understanding how best to structure complex python apps
+* Hendrik's blog on  [CookieCutter Flask](https://github.com/cookiecutter-flask) combining React with Socket.io was very useful, especially how he uses the callback pattern for event subscription 
 * I started this project at General Assembly - for their support - thanks!

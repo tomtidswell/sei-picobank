@@ -32,19 +32,24 @@ section.banking-page{
       margin-top: 20px;
       height:130px;
     }
+   
     .prev-month{
       position: absolute;
       top: 50%;
       left: -8px;
-      background-color: $tertiary-colour;
-      border: 3px solid $base-colour;
+      background-color: white;
+      border: 1px solid $base-colour;
+      color: black;
+      font-weight: 700;
     }
     .next-month{
       position: absolute;
       top: 50%;
       right: -8px;
-      background-color: $tertiary-colour;
-      border: 3px solid $base-colour;
+      background-color: white;
+      border: 1px solid $base-colour;
+      color: black;
+      font-weight: 700;
     }
   }
   .chip.add-filter{
